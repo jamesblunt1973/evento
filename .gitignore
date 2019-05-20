@@ -1,6 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 /ServerApi/obj
+/ServerApi/bin
 
 # IDE - VSCode
 .vscode/*
