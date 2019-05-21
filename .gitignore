@@ -2,6 +2,7 @@
 
 /ServerApi/obj
 /ServerApi/bin
+/ServerApi/Migrations
 
 # IDE - VSCode
 .vscode/*

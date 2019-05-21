@@ -10,6 +10,9 @@ namespace ServerApi.Models.DomainModels
         public int Id { get; set; }
 
         [Required]
+        public string UserId { get; set; }
+
+        [Required]
         [StringLength(256)]
         public string Title { get; set; }
 
@@ -26,13 +29,13 @@ namespace ServerApi.Models.DomainModels
         public int? Duration { get; set; }
 
         [Required]
-        [StringLength(4096)]
+        [StringLength(4000)]
         public string Description { get; set; }
 
         public int? Capacity { get; set; }
 
         [Required]
-        public int Joined{get;set;}
+        public int Joined { get; set; }
 
         [Required]
         public int VisitCount { get; set; }
@@ -44,7 +47,7 @@ namespace ServerApi.Models.DomainModels
         public int Votes { get; set; }
 
         [Required]
-        public bool Visibility { get; set; }
+        public bool Visibile { get; set; }
 
         [Required]
         public bool Verified { get; set; }
@@ -53,8 +56,14 @@ namespace ServerApi.Models.DomainModels
         public bool Payed { get; set; }
 
         [Required]
+        [StringLength(1024)]
         public string Link { get; set; }
 
-        public ICollection<Photo> Photos{get; set;}
+        // Navigation Properties
+        public ICollection<Activity> Activities { get; set; }
+        public ICollection<EventTag> EventTags { get; set; }
+        public ICollection<News> News { get; set; }
+        public ICollection<Photo> Photos { get; set; }
+        public User User { get; set; }
     }
 }

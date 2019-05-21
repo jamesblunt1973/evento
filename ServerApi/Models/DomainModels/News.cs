@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServerApi.Models.DomainModels
 {
-    public class Photo
+    public class News
     {
         public int Id { get; set; }
 
@@ -13,14 +13,15 @@ namespace ServerApi.Models.DomainModels
 
         [Required]
         [StringLength(256)]
-        public string FileName { get; set; }
+        public string Title { get; set; }
 
         [Required]
-        [StringLength(1024)]
-        public string Description { get; set; }
+        [StringLength(4000)]
+        public string Context { get; set; }
 
         [Required]
-        public bool Visibile { get; set; }
+        [Column(TypeName = "smalldatetime")]
+        public DateTime SubmitDate { get; set; }
 
         // Navigation Properties
         public Event Event { get; set; }
