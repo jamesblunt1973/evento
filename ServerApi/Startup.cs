@@ -15,11 +15,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ServerApi.Data;
 using ServerApi.Helpers;
+using ServerApi.Helpers.Logger;
 using ServerApi.Models.DomainModels;
 
 namespace ServerApi
@@ -56,6 +56,7 @@ namespace ServerApi
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
             // services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<ILogger, Logger>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

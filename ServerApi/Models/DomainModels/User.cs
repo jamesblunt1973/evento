@@ -9,11 +9,12 @@ namespace ServerApi.Models.DomainModels
         [Required]
         [StringLength(256)]
         public string Name { get; set; }
-        
+
         public bool? Gender { get; set; }
 
         // Navigation Properties
         public ICollection<Activity> Activities { get; set; }
         public ICollection<Event> Events { get; set; }
+        public ICollection<Log> Logs { get; set; }
     }
 }
