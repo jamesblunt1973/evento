@@ -3,6 +3,8 @@
 /ServerApi/obj
 /ServerApi/bin
 /ServerApi/Migrations
+/ServerApi/.vs
+/ServerApi/*.sln
 
 # IDE - VSCode
 .vscode/*

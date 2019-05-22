@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>test api</title>
+    <script src="jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var data = {
+                userId: 'dsd', title: 'test', latitude: 5, longitude: 9, holdingDate: '2019-06-28', description: 'sds', link: 'sds'
+            };
+            $.post('api/event/NewEvent', data).done(function (data) {
+                $('#result').text(data);
+            });
+        });
+    </script>
+</head>
+<body>
+    <h4>Test Static Files</h4>
+    <div id="result"></div>
+</body>
+</html>

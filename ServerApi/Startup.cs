@@ -108,6 +108,8 @@ namespace ServerApi
             }
 
             //app.UseHttpsRedirection();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseCors("cors");
             app.UseAuthentication();
             app.UseMvc();

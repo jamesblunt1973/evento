@@ -1,3 +1,4 @@
+using ServerApi.Models.TransferModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -5,34 +6,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServerApi.Models.DomainModels
 {
-    public class Event
+    public class Event: BaseEventData
     {
         public int Id { get; set; }
 
         [Required]
-        public string UserId { get; set; }
-
-        [Required]
-        [StringLength(256)]
-        public string Title { get; set; }
-
-        [Required]
-        public double Latitude { get; set; }
-
-        [Required]
-        public double Longitude { get; set; }
-
-        [Required]
         [Column(TypeName = "smalldatetime")]
-        public DateTime HoldingDate { get; set; }
-
-        public int? Duration { get; set; }
-
-        [Required]
-        [StringLength(4000)]
-        public string Description { get; set; }
-
-        public int? Capacity { get; set; }
+        public override DateTime HoldingDate { get; set; }
 
         [Required]
         public int Joined { get; set; }
@@ -46,18 +26,20 @@ namespace ServerApi.Models.DomainModels
         [Required]
         public int Votes { get; set; }
 
+        /// <summary>
+        /// Visiblity of event controlled by owner
+        /// </summary>
         [Required]
-        public bool Visibile { get; set; }
+        public bool Visible { get; set; }
 
-        [Required]
+        /// <summary>
+        /// Visiblity of event controlled by admin
+        /// </summary>
+       [Required]
         public bool Verified { get; set; }
 
         [Required]
         public bool Payed { get; set; }
-
-        [Required]
-        [StringLength(1024)]
-        public string Link { get; set; }
 
         // Navigation Properties
         public ICollection<Activity> Activities { get; set; }
