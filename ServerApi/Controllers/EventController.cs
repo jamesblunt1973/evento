@@ -47,7 +47,7 @@ namespace ServerApi.Controllers
         }
 
         [HttpPost("NewEvent")]
-        public async Task<IActionResult> NewEvent([FromForm]BaseEventData data)
+        public async Task<IActionResult> NewEvent(BaseEventData data)
         {
 
             // TODO: get GlobalVerification & GlobalPayment from settings
@@ -74,7 +74,11 @@ namespace ServerApi.Controllers
                 Visible = true,
                 VisitCount = 0
             };
-            return Ok();
+
+            context.Events.Add(e);
+            context.SaveChanges();
+
+            return Ok(new { id = e.Id });
         }
     }
 }
