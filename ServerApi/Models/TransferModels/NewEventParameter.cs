@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServerApi.Models.TransferModels
 {
-    public class BaseEventData
+    public class NewEventParameter
     {
         [Required]
         public string UserId { get; set; }

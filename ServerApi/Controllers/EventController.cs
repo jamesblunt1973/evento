@@ -26,7 +26,7 @@ namespace ServerApi.Controllers
         }
 
         [HttpPost("GetEvents")]
-        public async Task<IActionResult> GetEvents([FromForm]GetEventsFilter filter)
+        public async Task<IActionResult> GetEvents([FromForm]GetEventsParameter filter)
         {
             var result = new GetEventsResult();
 
@@ -47,7 +47,7 @@ namespace ServerApi.Controllers
         }
 
         [HttpPost("NewEvent")]
-        public async Task<IActionResult> NewEvent(BaseEventData data)
+        public async Task<IActionResult> NewEvent(NewEventParameter data)
         {
 
             // TODO: get GlobalVerification & GlobalPayment from settings

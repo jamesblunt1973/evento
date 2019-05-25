@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ServerApi.Models.TransferModels
 {
-    public class GetEventsFilter
+    public class GetEventsParameter
     {
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }

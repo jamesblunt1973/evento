@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServerApi.Models.DomainModels
 {
-    public class Event: BaseEventData
+    public class Event: NewEventParameter
     {
         public int Id { get; set; }
 
