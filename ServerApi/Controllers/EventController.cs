@@ -75,8 +75,8 @@ namespace ServerApi.Controllers
                 VisitCount = 0
             };
 
-            context.Events.Add(e);
-            context.SaveChanges();
+            await context.Events.AddAsync(e);
+            await context.SaveChangesAsync();
 
             return Ok(new { id = e.Id });
         }

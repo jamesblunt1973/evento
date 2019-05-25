@@ -1,0 +1,24 @@
+<div fxLayout="column" class="container">
+  <header>
+    <app-header></app-header>
+  </header>
+  <main fxLayout="column" fxFlex="1">
+    <mat-drawer-container fxFlex="1" (backdropClick)="onSidebarClosing()">
+      <mat-drawer mode="over" [opened]="sidebarStatus">
+        <mat-list>
+          <mat-list-item *ngFor="let route of routes" (click)="onSidebarClosing()">
+            <mat-icon>{{route.icon}}</mat-icon>&emsp;{{route.name}}
+          </mat-list-item>
+        </mat-list>
+      </mat-drawer>
+      <mat-drawer-content>
+        <main>
+          <router-outlet></router-outlet>
+        </main>
+      </mat-drawer-content>
+    </mat-drawer-container>
+  </main>
+  <footer>
+    <app-footer></app-footer>
+  </footer>
+</div>

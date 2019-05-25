@@ -1,0 +1,8 @@
+<div>
+  <h1>Welcome to Online Store</h1>
+  <input type="button" value="Add Content" (click)="addContent()" />
+  <input type="button" value="Remove Content" (click)="removeContent()" />
+</div>
+<div *ngFor="let c of elements" class="element">
+  {{c}}
+</div>

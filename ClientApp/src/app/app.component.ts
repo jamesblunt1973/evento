@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-
+import { AuthService } from './shared/auth.service';
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: '<app-layout></app-layout>',
+  styles: []
 })
 export class AppComponent {
-  title = 'ClientApp';
+  constructor(private authService: AuthService) {
+    this.authService.checkUser();    
+  }
 }

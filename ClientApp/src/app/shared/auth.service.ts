@@ -1,0 +1,45 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { User } from './models/user.model';
+import { LoginData } from '../auth/models/loginData.model';
+import { RegisterData } from '../auth/models/registerData.model';
+import { AppState } from '../app.state';
+import { LoginSuccess } from './state/auth.actions';
+
+@Injectable()
+export class AuthService {
+  private BASE_URL = 'http://localhost:5000/api/auth';
+
+  constructor(private http: HttpClient, private store: Store<AppState>) { }
+
+  checkUser() {
+    var jwt = localStorage.getItem('token');
+    if (jwt != null) {
+      let jwtData = jwt.split('.')[1];
+      let decodedJwtJsonData = atob(jwtData);
+      let decodedJwtData = JSON.parse(decodedJwtJsonData);
+      let user: User = {
+        email: decodedJwtData.email,
+        gender: decodedJwtData.gender ? eval(decodedJwtData.gender) : null,
+        id: decodedJwtData.nameid,
+        name: decodedJwtData.unique_name,
+        token: jwt
+      };
+
+      this.store.dispatch(new LoginSuccess(user));
+    }
+  }
+
+  login(loginData: LoginData): Observable<User> {
+    const url = `${this.BASE_URL}/login`;
+    return this.http.post<User>(url, loginData);
+  }
+
+  register(registerData: RegisterData): Observable<User> {
+    const url = `${this.BASE_URL}/register`;
+    return this.http.post<User>(url, registerData);
+  }
+}

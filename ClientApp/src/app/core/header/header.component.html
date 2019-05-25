@@ -1,0 +1,22 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="menuClick()">
+    <div class="hamburger" [ngClass]="sidebarStatus$ | async">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </button>
+  <a class="home-link" routerLink="/">
+    <img src="assets/images/logo.png" />
+  </a>
+  <div fxFlexOffset="auto" fxLayout="row" fxLayoutGap="10px">
+    <div *ngIf="user$ | async as user else authLinks">
+      {{user.name}}
+    </div>
+  </div>
+</mat-toolbar>
+<ng-template #authLinks>
+  <a routerLink="auth/login">Login</a>
+  <a routerLink="auth/register">Register</a>
+</ng-template>

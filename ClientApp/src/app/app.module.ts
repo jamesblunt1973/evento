@@ -1,24 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { NeweventComponent } from './newevent/newevent.component';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { CoreModule } from './core/core.module';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NeweventComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
     HttpClientModule,
-    AppRoutingModule,
-    LeafletModule.forRoot()
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
