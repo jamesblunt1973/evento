@@ -6,9 +6,14 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { UniqueUserNameValidatorDirective, UniqueEmailValidatorDirective } from './auth.validations';
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [
+    LoginComponent, 
+    RegisterComponent, 
+    UniqueUserNameValidatorDirective, 
+    UniqueEmailValidatorDirective],
   imports: [
     CommonModule,
     SharedModule,

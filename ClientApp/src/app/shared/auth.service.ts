@@ -9,7 +9,9 @@ import { RegisterData } from '../auth/models/registerData.model';
 import { AppState } from '../app.state';
 import { LoginSuccess } from './state/auth.actions';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   private BASE_URL = 'http://localhost:5000/api/auth';
 
@@ -41,5 +43,21 @@ export class AuthService {
   register(registerData: RegisterData): Observable<User> {
     const url = `${this.BASE_URL}/register`;
     return this.http.post<User>(url, registerData);
+  }
+
+  checkUserName(userName: string): Observable<boolean> {
+    const url = `${this.BASE_URL}/checkUserName`;
+    let data = {
+      str: userName
+    }
+    return this.http.post<boolean>(url, data);
+  }
+
+  checkEmail(email: string): Observable<boolean> {
+    const url = `${this.BASE_URL}/checkEmail`;
+    let data = {
+      str: email
+    }
+    return this.http.post<boolean>(url, data);
   }
 }

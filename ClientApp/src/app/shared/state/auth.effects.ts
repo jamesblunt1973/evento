@@ -30,7 +30,7 @@ export class AuthEffects {
   @Effect()
   Register: Observable<any> = this.actions.pipe(
     ofType(fromActions.AuthActionTypes.Register),
-    mergeMap((registerActionData: fromActions.Register) => this.authService.login(registerActionData.payload)
+    mergeMap((registerActionData: fromActions.Register) => this.authService.register(registerActionData.payload)
       .pipe(
         map(user => (new fromActions.RegisterSuccess(user))),
         catchError(error => of(new fromActions.RegisterFailure(error.statusText)))
@@ -56,25 +56,3 @@ export class AuthEffects {
     })
   );
 }
-  // mergeMap(action => {
-  //   return this.authService.login(action).pipe(
-  //     map(user => {
-  //       return new LoginSuccess(user)
-  //     }),
-  //     catchError(error => {
-  //       return Observable.of(new LoginFailure(error))
-  //     })
-  //   );
-  // })
-  // .map((action: Login) => action.payload)
-  // .switchMap(payload => {
-  //   return this.authService.login(payload.email, payload.password)
-  //     .map((user) => {
-  //       console.log(user);
-  //       return new LogInSuccess({ token: user.token, email: payload.email });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       return Observable.of(new LogInFailure({ error: error }));
-  //     });
-  // });

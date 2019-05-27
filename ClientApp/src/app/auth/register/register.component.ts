@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
@@ -8,6 +8,7 @@ import { AppState } from '../../app.state';
 import { Register } from '../../shared/state/auth.actions';
 import { RegisterData } from '../models/registerData.model';
 import * as fromReducer from '../../shared/state/auth.reducer';
+import { UniqueUserNameValidator, ConfirmPasswordValidator, UniqueEmailValidator } from '../auth.validations';
 
 @Component({
   selector: 'app-register',
@@ -16,39 +17,44 @@ import * as fromReducer from '../../shared/state/auth.reducer';
 })
 export class RegisterComponent implements OnInit, OnDestroy {
 
-  // model: RegisterData = {
-  //   password: 'Fdsa$321',
-  //   userName: 'malekan',
-  //   email: 'malekan@mail.com',
-  //   gender: true,
-  //   name: 'Mahdi Malekan',
-  //   passwordConfirmation: 'Fdsa$321'
-  // };
-  model: RegisterData;
   drawerContent: any;
   subscriptions: Array<Subscription> = [];
+  emailAsyncLoader = false;
+  userNameAsyncLoader = false;
 
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private store: Store<AppState>) { }
+    private store: Store<AppState>,
+    private uniqueUserNameValidator: UniqueUserNameValidator,
+    private uniqueEmailValidator: UniqueEmailValidator) { }
 
   registerForm = this.fb.group({
-    name: this.fb.control(''),
-    userName: this.fb.control(''),
-    email: this.fb.control(''),
-    gender: this.fb.control(null),
-    password: this.fb.control(''),
-    passwordConfirmation: this.fb.control('')
+    name: this.fb.control('', Validators.required),
+    userName: this.fb.control('', {
+      validators: Validators.required,
+      asyncValidators: this.uniqueUserNameValidator.validate.bind(this.uniqueUserNameValidator),
+      updateOn: 'blur'
+    }),
+    email: this.fb.control('', {
+      validators: [Validators.required, Validators.email],
+      asyncValidators: this.uniqueEmailValidator.validate.bind(this.uniqueEmailValidator),
+      updateOn: 'blur'
+    }),
+    gender: this.fb.control('null'),
+    password: this.fb.control('', [Validators.required, Validators.minLength(6)]),
+    passwordConfirmation: this.fb.control('', Validators.required)
+  }, {
+      validators: ConfirmPasswordValidator
   });
 
+  get userName() { return this.registerForm.get('userName') }
+  get email() { return this.registerForm.get('email') }
+  get password() { return this.registerForm.get('password') }
+  get passwordConfirmation() { return this.registerForm.get('passwordConfirmation') }
+
   register() {
-    console.log(this.registerForm.value);
-    //this.store.dispatch(new Register(this.model));
-    // this.authService.register(this.model).subscribe(
-    //   res => console.log(res),
-    //   error => console.log(error)
-    // );
+    this.store.dispatch(new Register(this.registerForm.value));
   }
 
   ngOnInit(): void {
@@ -56,7 +62,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.drawerContent.style.backgroundImage = 'url(\'../../../assets/images/login-bg.jpg\')';
     this.drawerContent.style.backgroundRepeat = 'no-repeat';
     this.drawerContent.style.backgroundSize = 'cover';
-    
+
     let sub = this.store.pipe(select(fromReducer.getAuthErrorMessage)).subscribe(msg => {
       if (msg != '') {
         this.snackBar.open(msg, 'close', {
@@ -75,6 +81,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.push(sub);
 
+    sub = this.store.pipe(select(fromReducer.getCheckUserName)).subscribe(stat => {
+      this.userNameAsyncLoader = stat;
+    });
+    this.subscriptions.push(sub);
+
+    sub = this.store.pipe(select(fromReducer.getCheckEmail)).subscribe(stat => {
+      this.emailAsyncLoader = stat;
+    });
+    this.subscriptions.push(sub);
   }
 
   ngOnDestroy(): void {

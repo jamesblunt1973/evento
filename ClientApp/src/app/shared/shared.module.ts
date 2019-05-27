@@ -18,7 +18,7 @@ import { AuthService } from './auth.service';
     StoreModule.forFeature('authState', authReducer),
     EffectsModule.forFeature([AuthEffects])
   ],
-  providers: [AuthService],
+  providers: [],
   exports: [
     CommonModule,
     MaterialComponentsModule,

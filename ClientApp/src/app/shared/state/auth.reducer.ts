@@ -7,6 +7,8 @@ export interface AuthState {
     isAuthenticated: boolean;
     user: User | null;
     errorMessage: string;
+    checkUserName: boolean;
+    checkEmail: boolean;
 }
 
 export interface AppState extends fromRoot.AppState {
@@ -30,10 +32,22 @@ export const getAuthUser = createSelector(
     state => state.user
 );
 
+export const getCheckEmail = createSelector(
+    getAuthFeatureState,
+    state => state.checkEmail
+);
+
+export const getCheckUserName = createSelector(
+    getAuthFeatureState,
+    state => state.checkUserName
+);
+
 export const initialState: AuthState = {
     isAuthenticated: false,
     user: null,
-    errorMessage: ''
+    errorMessage: '',
+    checkEmail: false,
+    checkUserName: false
 };
 
 export function authReducer(state: AuthState = initialState, action: AuthActions): AuthState {
@@ -45,10 +59,32 @@ export function authReducer(state: AuthState = initialState, action: AuthActions
                 user: action.payload,
                 errorMessage: ''
             }
+        case AuthActionTypes.RegisterSuccess:
+            return {
+                ...state,
+                isAuthenticated: true,
+                user: action.payload,
+                errorMessage: ''
+            }
         case AuthActionTypes.LoginFailure:
             return {
                 ...state,
                 errorMessage: action.payload
+            }
+        case AuthActionTypes.RegisterFailure:
+            return {
+                ...state,
+                errorMessage: action.payload
+            }
+        case AuthActionTypes.CheckUserName:
+            return {
+                ...state,
+                checkUserName: !state.checkUserName
+            }
+        case AuthActionTypes.CheckEmail:
+            return {
+                ...state,
+                checkEmail: !state.checkEmail
             }
         default:
             return state;

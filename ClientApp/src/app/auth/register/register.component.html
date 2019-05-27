@@ -8,32 +8,35 @@
     <mat-card-content fxLayout="column">
       <mat-form-field>
         <input type="text" matInput placeholder="Name" formControlName="name" />
+        <mat-error>Name is required</mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <label>
-          <input type="radio" formControlName="gender" value="true" />
-          Male
-        </label>
-        <label>
-          <input type="radio" formControlName="gender" value="false" />
-          Female
-        </label>
-        <label>
-          <input type="radio" formControlName="gender" value="null" />
-          Not Specified
-        </label>
-      </mat-form-field>
+      <mat-radio-group aria-label="Select Your Gender" formControlName="gender" fxLayout="row" fxLayoutAlign="space-between">
+        <mat-radio-button value="true">Male</mat-radio-button>
+        <mat-radio-button value="false">Female</mat-radio-button>
+        <mat-radio-button value="null">Not Specified</mat-radio-button>
+      </mat-radio-group>
       <mat-form-field>
         <input type="text" matInput placeholder="User Name" formControlName="userName" />
+        <img *ngIf="userNameAsyncLoader" matSuffix src="../../../assets/images/waiting.gif" />
+        <mat-error *ngIf="userName.errors?.required">UserName is required</mat-error>
+        <mat-error *ngIf="userName.errors?.uniqueUserName">UserName is not unique</mat-error>
       </mat-form-field>
       <mat-form-field>
         <input type="email" matInput placeholder="Email" formControlName="email" />
+        <img *ngIf="emailAsyncLoader" matSuffix src="../../../assets/images/waiting.gif" />
+        <mat-error *ngIf="email.errors?.required">Email is required</mat-error>
+        <mat-error *ngIf="email.errors?.email">Email in not valid</mat-error>
+        <mat-error *ngIf="email.errors?.uniqueEmail">Email is not unique</mat-error>
       </mat-form-field>
       <mat-form-field>
         <input type="password" matInput placeholder="Password" formControlName="password" />
+        <mat-error *ngIf="password.errors?.required">Password is required</mat-error>
+        <mat-error *ngIf="password.errors?.minlength">Password must be atleast 6 charachters</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input type="password" matInput placeholder="ReEnter Password" formControlName="passwordConfirmation" />
+        <input type="password" matInput placeholder="Confirm your password" formControlName="passwordConfirmation" />
+        <mat-error *ngIf="passwordConfirmation.errors?.required">Password confirmation is required</mat-error>
+        <mat-error *ngIf="registerForm.errors?.confirmPassword">Passwords do not match</mat-error>
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
