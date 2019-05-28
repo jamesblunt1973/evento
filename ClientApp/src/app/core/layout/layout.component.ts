@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { ToggleSidebar } from '../state/ui.actions';
-import { getSidebarStatus } from '../state/ui.reducer';
+import { CloseSidebar, CloseRightbar } from '../state/ui.actions';
+import { getSidebarStatus, getRightbarStatus } from '../state/ui.reducer';
 import { AppState } from '../../app.state';
 
 @Component({
@@ -14,6 +14,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   subscriptions: Array<Subscription> = [];
   sidebarStatus: boolean;
+  rightbarStatus: boolean;
 
   routes = [
     { path: '/', name: 'Home', icon: 'home' },
@@ -29,6 +30,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
       this.sidebarStatus = status == 'open';
     });
     this.subscriptions.push(sub);
+    
+    sub = this.store.pipe(select(getRightbarStatus)).subscribe(status => {
+      this.rightbarStatus = status == 'open';
+    });
+    this.subscriptions.push(sub);
   }
 
   ngOnDestroy() {
@@ -38,6 +44,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   onSidebarClosing() {
-    this.store.dispatch(new ToggleSidebar());
+    this.store.dispatch(new CloseSidebar());
+    this.store.dispatch(new CloseRightbar());
+  }
+
+  closeSidebar() {
+    this.store.dispatch(new CloseSidebar());
+  }
+
+  closeRightbar() {
+    this.store.dispatch(new CloseRightbar());
   }
 }

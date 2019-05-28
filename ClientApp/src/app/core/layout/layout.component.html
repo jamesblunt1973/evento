@@ -4,10 +4,23 @@
   </header>
   <main fxLayout="column" fxFlex="1">
     <mat-drawer-container fxFlex="1" (backdropClick)="onSidebarClosing()">
-      <mat-drawer mode="over" [opened]="sidebarStatus">
+      <mat-drawer mode="over" [opened]="sidebarStatus" position="start">
         <mat-list>
-          <mat-list-item *ngFor="let route of routes" (click)="onSidebarClosing()">
+          <mat-list-item *ngFor="let route of routes" (click)="closeSidebar()">
             <mat-icon>{{route.icon}}</mat-icon>&emsp;{{route.name}}
+          </mat-list-item>
+        </mat-list>
+      </mat-drawer>
+      <mat-drawer mode="over" [opened]="rightbarStatus" position="end">
+        <mat-list>
+          <mat-list-item (click)="closeRightbar()">
+            <mat-icon>vpn_key</mat-icon>&emsp;Login
+          </mat-list-item>
+          <mat-list-item (click)="closeRightbar()">
+            <mat-icon>how_to_reg</mat-icon>&emsp;Register
+          </mat-list-item>
+          <mat-list-item (click)="closeRightbar()">
+            <mat-icon>logout</mat-icon>&emsp;Logout
           </mat-list-item>
         </mat-list>
       </mat-drawer>

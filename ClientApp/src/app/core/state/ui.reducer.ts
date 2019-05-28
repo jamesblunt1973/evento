@@ -3,6 +3,7 @@ import { UiActionTypes, UiActions } from './ui.actions';
 
 export interface UiState {
     sidebarStatus: 'open' | 'close';
+    rightbarStatus: 'open' | 'close';
     spinnerStatus: 'show' | 'hide';
 }
 
@@ -13,17 +14,41 @@ export const getSidebarStatus = createSelector(
     state => state.sidebarStatus
 );
 
+export const getRightbarStatus = createSelector(
+    getUiFeatureState,
+    state => state.rightbarStatus
+);
+
 const initialState: UiState = {
     sidebarStatus: 'close',
+    rightbarStatus: 'close',
     spinnerStatus: 'hide'
 }
 
 export function uiReducer(state: UiState = initialState, action: UiActions): UiState {
     switch (action.type) {
-        case UiActionTypes.ToggleSidebar: {
+        case UiActionTypes.OpenSidebar: {
             return {
                 ...state,
-                sidebarStatus: state.sidebarStatus == 'open' ? 'close' : 'open'
+                sidebarStatus: 'open'
+            }
+        }
+        case UiActionTypes.CloseSidebar: {
+            return {
+                ...state,
+                sidebarStatus: 'close'
+            }
+        }
+        case UiActionTypes.OpenRightbar: {
+            return {
+                ...state,
+                rightbarStatus: 'open'
+            }
+        }
+        case UiActionTypes.CloseRightbar: {
+            return {
+                ...state,
+                rightbarStatus: 'close'
             }
         }
         default:

@@ -1,12 +1,27 @@
 import { Action } from '@ngrx/store';
 
 export enum UiActionTypes {
-  ToggleSidebar = '[Core] ToggleSidebar',
+  OpenSidebar = '[Core] OpenSidebar',
+  CloseSidebar = '[Core] CloseSidebar',
+  OpenRightbar = '[Core] OpenRightbar',
+  CloseRightbar = '[Core] CloseRightbar',
   ToggleSpinner = '[Core] ToggleSpinner'
 }
 
-export class ToggleSidebar implements Action {
-  readonly type = UiActionTypes.ToggleSidebar;
+export class OpenSidebar implements Action {
+  readonly type = UiActionTypes.OpenSidebar;
+}
+
+export class CloseSidebar implements Action {
+  readonly type = UiActionTypes.CloseSidebar;
+}
+
+export class OpenRightbar implements Action {
+  readonly type = UiActionTypes.OpenRightbar;
+}
+
+export class CloseRightbar implements Action {
+  readonly type = UiActionTypes.CloseRightbar;
 }
 
 export class ToggleSpinner implements Action {
@@ -14,5 +29,8 @@ export class ToggleSpinner implements Action {
   constructor(public payload: string) { }
 }
 
-export type UiActions = ToggleSidebar
+export type UiActions = OpenSidebar
+  | CloseSidebar
+  | OpenRightbar
+  | CloseRightbar
   | ToggleSpinner;
