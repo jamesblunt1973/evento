@@ -39,6 +39,15 @@ export class AuthEffects {
   )
 
   @Effect({ dispatch: false })
+  Logout: Observable<any> = this.actions.pipe(
+    ofType(fromActions.AuthActionTypes.Logout),
+    tap((action: fromActions.Logout) => {
+      this.authService.logout();
+      this.router.navigateByUrl('/');
+    })
+  );
+
+  @Effect({ dispatch: false })
   LoginSuccess: Observable<any> = this.actions.pipe(
     ofType(fromActions.AuthActionTypes.LoginSuccess),
     tap((action: fromActions.LoginSuccess) => {
@@ -52,7 +61,7 @@ export class AuthEffects {
     ofType(fromActions.AuthActionTypes.RegisterSuccess),
     tap((action: fromActions.RegisterSuccess) => {
       localStorage.setItem('token', action.payload.token);
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/'); // TODO: check return url
     })
   );
 }

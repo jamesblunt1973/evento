@@ -7,7 +7,7 @@ import { User } from './models/user.model';
 import { LoginData } from '../auth/models/loginData.model';
 import { RegisterData } from '../auth/models/registerData.model';
 import { AppState } from '../app.state';
-import { LoginSuccess } from './state/auth.actions';
+import { LoginSuccess, Logout } from './state/auth.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +43,11 @@ export class AuthService {
   register(registerData: RegisterData): Observable<User> {
     const url = `${this.BASE_URL}/register`;
     return this.http.post<User>(url, registerData);
+  }
+
+  logout(): Observable<object> {
+    const url = `${this.BASE_URL}/logout`;
+    return this.http.get(url);
   }
 
   checkUserName(userName: string): Observable<boolean> {

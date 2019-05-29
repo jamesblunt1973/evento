@@ -76,6 +76,13 @@ export function authReducer(state: AuthState = initialState, action: AuthActions
                 ...state,
                 errorMessage: action.payload
             }
+        case AuthActionTypes.Logout:
+            return {
+                ...state,
+                isAuthenticated: false,
+                user: null,
+                errorMessage: ''
+            }
         case AuthActionTypes.CheckUserName:
             return {
                 ...state,

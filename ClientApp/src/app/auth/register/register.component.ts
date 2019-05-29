@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 
 import { AppState } from '../../app.state';
 import { Register } from '../../shared/state/auth.actions';
-import { RegisterData } from '../models/registerData.model';
 import * as fromReducer from '../../shared/state/auth.reducer';
 import { UniqueUserNameValidator, ConfirmPasswordValidator, UniqueEmailValidator } from '../auth.validations';
 
@@ -60,8 +59,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.drawerContent = document.getElementsByTagName('mat-drawer-container').item(0);
     this.drawerContent.style.backgroundImage = 'url(\'../../../assets/images/login-bg.jpg\')';
-    this.drawerContent.style.backgroundRepeat = 'no-repeat';
-    this.drawerContent.style.backgroundSize = 'cover';
 
     let sub = this.store.pipe(select(fromReducer.getAuthErrorMessage)).subscribe(msg => {
       if (msg != '') {

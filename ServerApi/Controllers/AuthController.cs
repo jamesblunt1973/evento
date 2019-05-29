@@ -36,7 +36,7 @@ namespace ServerApi.Controllers
             this.userManager = userManager;
         }
 
-        [HttpPost("logout")]
+        [HttpGet("logout")]
         public async Task Logout()
         {
             await signInManager.SignOutAsync();

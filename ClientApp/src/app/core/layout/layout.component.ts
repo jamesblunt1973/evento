@@ -1,9 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { CloseSidebar, CloseRightbar } from '../state/ui.actions';
 import { getSidebarStatus, getRightbarStatus } from '../state/ui.reducer';
 import { AppState } from '../../app.state';
+import { User } from '../../shared/models/user.model';
+import { getAuthUser } from '../../shared/state/auth.reducer';
+import { Logout } from '../../shared/state/auth.actions';
 
 @Component({
   selector: 'app-layout',
@@ -15,6 +18,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   subscriptions: Array<Subscription> = [];
   sidebarStatus: boolean;
   rightbarStatus: boolean;
+  user$: Observable<User>;
 
   routes = [
     { path: '/', name: 'Home', icon: 'home' },
@@ -35,6 +39,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
       this.rightbarStatus = status == 'open';
     });
     this.subscriptions.push(sub);
+    
+    this.user$ = this.store.pipe(select(getAuthUser));
   }
 
   ngOnDestroy() {
@@ -53,6 +59,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   closeRightbar() {
+    this.store.dispatch(new CloseRightbar());
+  }
+
+  logout() {
+    this.store.dispatch(new Logout());
     this.store.dispatch(new CloseRightbar());
   }
 }

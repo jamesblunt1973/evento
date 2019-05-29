@@ -5,24 +5,39 @@
   <main fxLayout="column" fxFlex="1">
     <mat-drawer-container fxFlex="1" (backdropClick)="onSidebarClosing()">
       <mat-drawer mode="over" [opened]="sidebarStatus" position="start">
-        <mat-list>
+        <mat-nav-list>
           <mat-list-item *ngFor="let route of routes" (click)="closeSidebar()">
             <mat-icon>{{route.icon}}</mat-icon>&emsp;{{route.name}}
           </mat-list-item>
-        </mat-list>
+        </mat-nav-list>
       </mat-drawer>
       <mat-drawer mode="over" [opened]="rightbarStatus" position="end">
-        <mat-list>
+        <mat-nav-list>
           <mat-list-item (click)="closeRightbar()">
-            <mat-icon>vpn_key</mat-icon>&emsp;Login
+            <mat-icon>home</mat-icon>
+            <a routerLink="/">&emsp;Home</a>
           </mat-list-item>
-          <mat-list-item (click)="closeRightbar()">
-            <mat-icon>how_to_reg</mat-icon>&emsp;Register
-          </mat-list-item>
-          <mat-list-item (click)="closeRightbar()">
-            <mat-icon>logout</mat-icon>&emsp;Logout
-          </mat-list-item>
-        </mat-list>
+          <div *ngIf="user$ | async; then loggedInLinks else loggedOutLinks"></div>
+          <ng-template #loggedOutLinks>
+            <mat-list-item (click)="closeRightbar()">
+              <mat-icon>vpn_key</mat-icon>
+              <a routerLink="auth/login">&emsp;Login</a>
+            </mat-list-item>
+            <mat-list-item (click)="closeRightbar()">
+              <mat-icon>how_to_reg</mat-icon>
+              <a routerLink="auth/register">&emsp;Register</a>
+            </mat-list-item>
+          </ng-template>
+          <ng-template #loggedInLinks>
+            <mat-list-item>
+              <mat-icon>event_available</mat-icon>
+              <a routerLink="new">&emsp;New Event</a>
+            </mat-list-item>
+            <mat-list-item (click)="logout()">
+              <mat-icon>logout</mat-icon>&emsp;Logout
+            </mat-list-item>
+          </ng-template>
+        </mat-nav-list>
       </mat-drawer>
       <mat-drawer-content>
         <main>
