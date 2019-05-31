@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 }
 
   ngOnDestroy(): void {
-    this.drawerContent.style.background = '';
+    //this.drawerContent.style.background = '';
   }
 
   addContent() {

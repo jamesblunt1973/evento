@@ -1,39 +1,45 @@
 import { NgModule } from '@angular/core';
 import {
   MatSidenavModule,
-  MatIconModule, 
-  MatToolbarModule, 
-  MatListModule, 
+  MatIconModule,
+  MatToolbarModule,
+  MatListModule,
   MatButtonModule,
   MatFormFieldModule,
   MatInputModule,
   MatCardModule,
   MatSnackBarModule,
-  MatRadioModule
+  MatRadioModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 } from '@angular/material';
 
 @NgModule({
   exports: [
-    MatButtonModule, 
+    MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    MatListModule, 
+    MatListModule,
     MatSidenavModule,
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
     MatSnackBarModule,
-    MatRadioModule],
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule],
   imports: [
-    MatButtonModule, 
+    MatButtonModule,
     MatIconModule,
-    MatToolbarModule, 
+    MatToolbarModule,
     MatListModule,
-    MatSidenavModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
+    MatSidenavModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatCardModule,
     MatSnackBarModule,
-    MatRadioModule],
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule],
 })
 export class MaterialComponentsModule { }

@@ -29,7 +29,7 @@
             </mat-list-item>
           </ng-template>
           <ng-template #loggedInLinks>
-            <mat-list-item>
+            <mat-list-item (click)="closeRightbar()">
               <mat-icon>event_available</mat-icon>
               <a routerLink="new">&emsp;New Event</a>
             </mat-list-item>

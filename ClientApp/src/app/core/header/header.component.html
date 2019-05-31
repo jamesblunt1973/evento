@@ -10,11 +10,12 @@
   <a class="home-link" routerLink="/">
     <img src="assets/images/logo.png" />
   </a>
-  <div fxFlexOffset="auto" fxLayout="row" fxLayoutGap="10px">
-    <img class="user-icon" src="../../../assets/images/login-icon.svg" />    
+  <div fxFlexOffset="auto" fxLayout="row-reverse" fxLayoutGap="10px" fxLayoutAlign="center center">
     <button mat-icon-button (click)="userBtnClick()">
         <mat-icon>more_vert</mat-icon>
     </button>
+    <img class="user-icon" src="../../../assets/images/login-icon.svg" />    
+    <div *ngIf="user$ | async as user">{{user.name}}</div>
   </div>
 </mat-toolbar>
 <!--

@@ -10,3 +10,13 @@ body {
   /*font-family: Tahoma;*/
   font-weight: normal;
 }
+
+.narrow-form {
+  max-width: 360px;
+  min-width: 280px;
+  margin: 50px auto;
+}
+.auth-header-image {
+  background-image: url('./assets/images/login-icon.svg');
+  background-size: cover;
+}
