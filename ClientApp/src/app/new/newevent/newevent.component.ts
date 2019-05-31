@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
+import { Observable } from 'rxjs';
 import { tileLayer, latLng, Map, marker, icon, polyline, point, Layer, circle, polygon, LatLng } from 'leaflet';
 import { AppEvent } from '../models/event';
+import { MainService } from '../../shared/main.service';
+import { Tag } from '../../shared/models/Tag';
 
 @Component({
   selector: 'app-newevent',
@@ -15,6 +18,7 @@ export class NeweventComponent implements OnInit {
   center: LatLng = latLng([0, 0]);
   markers: Layer[] = [];
   position: LatLng;
+  tags$: Observable<Tag[]>;
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     detectRetina: true
   });
@@ -25,7 +29,7 @@ export class NeweventComponent implements OnInit {
   };
   time: string = '';
 
-  constructor(private snackBar: MatSnackBar) {
+  constructor(private snackBar: MatSnackBar, private mainService: MainService) {
     var yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     this.yesterday = yesterday;
@@ -49,6 +53,8 @@ export class NeweventComponent implements OnInit {
           break;
       }
     });
+
+    this.tags$ = this.mainService.getTags();
   }
 
   mapClick(map: any) {

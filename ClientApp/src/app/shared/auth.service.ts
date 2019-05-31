@@ -7,13 +7,15 @@ import { User } from './models/user.model';
 import { LoginData } from '../auth/models/loginData.model';
 import { RegisterData } from '../auth/models/registerData.model';
 import { AppState } from '../app.state';
-import { LoginSuccess, Logout } from './state/auth.actions';
+import { LoginSuccess } from './state/auth.actions';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private BASE_URL = 'http://localhost:5000/api/auth';
+  
+  private BASE_URL = environment.apiUrl + 'auth';
 
   constructor(private http: HttpClient, private store: Store<AppState>) { }
 
