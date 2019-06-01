@@ -9,6 +9,7 @@ export interface IEvent {
     description: string;
     capacity: number | null;
     link: string;
+    tags: number[];
 }
 
 export class AppEvent implements IEvent {
@@ -22,6 +23,7 @@ export class AppEvent implements IEvent {
         public duration: number | null = null,
         public description: string = '',
         public capacity: number | null = null,
-        public link: string = ''
+        public link: string = '',
+        public tags: number[] = []
     ) { }
 }

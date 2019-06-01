@@ -50,12 +50,13 @@
       <small>Event Location</small>
       <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" [(leafletCenter)]="center"
         (leafletClick)="mapClick($event)"></div>
-      <mat-selection-list #shoes>
-        <mat-list-option *ngFor="let tag of tags$ | async">
+      <mat-selection-list [(ngModel)]="model.tags" name="tags">
+        <mat-list-option *ngFor="let tag of tags$ | async" [value]="tag.id">
           <img matListAvatar src="../../../assets/files/tags/{{tag.id}}.jpg" alt="{{tag.title}}" />
           {{tag.title}}
         </mat-list-option>
       </mat-selection-list>
+      selected tags: {{model.tags | json}}
     </mat-drawer-content>
     <mat-card-actions>
       <button [disabled]="!newEventForm.valid" mat-button>SUBMIT</button>
