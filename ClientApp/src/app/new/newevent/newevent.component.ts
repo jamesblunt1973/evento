@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tileLayer, latLng, Map, marker, icon, polyline, point, Layer, circle, polygon, LatLng } from 'leaflet';
 import { AppEvent } from '../models/event.model';
+import { AuthState, getAuthUser } from '../../shared/state/auth.reducer';
 import { MainService } from '../../shared/main.service';
 import { ITag } from '../../shared/models/tag.model';
+import { NewEventService } from '../newevent.service';
+import { IUser } from '../../shared/models/user.model';
 
 @Component({
   selector: 'app-newevent',
@@ -28,8 +32,13 @@ export class NeweventComponent implements OnInit {
     center: this.center
   };
   time: string = '';
+  user: IUser;
 
-  constructor(private snackBar: MatSnackBar, private mainService: MainService) {
+  constructor(
+      private snackBar: MatSnackBar, 
+      private mainService: MainService, 
+      private eventService: NewEventService,
+      private store: Store<AuthState>) {
     var yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     this.yesterday = yesterday;
@@ -55,6 +64,10 @@ export class NeweventComponent implements OnInit {
     });
 
     this.tags$ = this.mainService.getTags();
+
+    this.store.pipe(select(getAuthUser)).subscribe(user => {
+      this.user = user;
+    });
   }
 
   mapClick(map: any) {
@@ -105,6 +118,7 @@ export class NeweventComponent implements OnInit {
       time += (hour * 3600 + min * 60) * 1000;
       this.model.holdingDate.setTime(time);
     }
-    console.log(this.model);
+    this.model.userId = this.user.id;
+    this.eventService.newEvent(this.model);
   }
 }

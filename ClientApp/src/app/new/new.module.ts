@@ -6,6 +6,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { SharedModule } from '../shared/shared.module';
 import { NewRoutingModule } from './new-routing.module';
 import { NeweventComponent } from './newevent/newevent.component';
+import { NewEventService } from './newevent.service';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NeweventComponent } from './newevent/newevent.component';
     NewRoutingModule,
     LeafletModule.forRoot(),
     NgxMaterialTimepickerModule
-  ]
+  ],
+  providers: [NewEventService] // Preventring circular dependency
 })
 export class NewModule { }
