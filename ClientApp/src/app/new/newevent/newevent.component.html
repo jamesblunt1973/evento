@@ -33,7 +33,7 @@
       </div>
       <mat-form-field>
         <input type="number" matInput name="duration" [(ngModel)]="model.duration" placeholder="Event Duration" />
-        <mat-hint matSuffix>Hour(s)</mat-hint>
+        <mat-hint matSuffix>Minutes</mat-hint>
       </mat-form-field>
       <mat-form-field>
         <input type="number" matInput name="capacity" [(ngModel)]="model.capacity" placeholder="Capacity" />
@@ -50,6 +50,7 @@
       <small>Event Location</small>
       <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" [(leafletCenter)]="center"
         (leafletClick)="mapClick($event)"></div>
+      <small>Select atleast one</small>
       <mat-selection-list [(ngModel)]="model.tags" name="tags">
         <mat-list-option *ngFor="let tag of tags$ | async" [value]="tag.id">
           <img matListAvatar src="../../../assets/files/tags/{{tag.id}}.jpg" alt="{{tag.title}}" />

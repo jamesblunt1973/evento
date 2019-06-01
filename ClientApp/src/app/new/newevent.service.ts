@@ -12,7 +12,7 @@ export class NewEventService {
 
   newEvent(event: IEvent) {
     const url = `${this.BASE_URL}/NewEvent`;
-    this.http.post(url, event).subscribe(res => console.log(res), error => console.log(error));
+    return this.http.post(url, event);
   }
 
 }

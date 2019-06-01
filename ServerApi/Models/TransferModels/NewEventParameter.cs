@@ -23,13 +23,11 @@ namespace ServerApi.Models.TransferModels
 
         public int? Duration { get; set; }
 
-        [Required]
         [StringLength(4000)]
         public string Description { get; set; }
 
         public int? Capacity { get; set; }
 
-        [Required]
         [StringLength(1024)]
         public string Link { get; set; }
     }
