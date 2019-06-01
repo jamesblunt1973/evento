@@ -1,11 +1,11 @@
 import * as fromRoot from '../../app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { User } from '../models/user.model';
+import { IUser } from '../models/user.model';
 import { AuthActionTypes, AuthActions } from './auth.actions';
 
 export interface AuthState {
     isAuthenticated: boolean;
-    user: User | null;
+    user: IUser;
     errorMessage: string;
     checkUserName: boolean;
     checkEmail: boolean;

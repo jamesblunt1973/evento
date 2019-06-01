@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { User } from './models/user.model';
+import { IUser } from './models/user.model';
 import { LoginData } from '../auth/models/loginData.model';
 import { RegisterData } from '../auth/models/registerData.model';
 import { AppState } from '../app.state';
@@ -25,7 +25,7 @@ export class AuthService {
       let jwtData = jwt.split('.')[1];
       let decodedJwtJsonData = atob(jwtData);
       let decodedJwtData = JSON.parse(decodedJwtJsonData);
-      let user: User = {
+      let user: IUser = {
         email: decodedJwtData.email,
         gender: decodedJwtData.gender ? eval(decodedJwtData.gender) : null,
         id: decodedJwtData.nameid,
@@ -37,14 +37,14 @@ export class AuthService {
     }
   }
 
-  login(loginData: LoginData): Observable<User> {
+  login(loginData: LoginData): Observable<IUser> {
     const url = `${this.BASE_URL}/login`;
-    return this.http.post<User>(url, loginData);
+    return this.http.post<IUser>(url, loginData);
   }
 
-  register(registerData: RegisterData): Observable<User> {
+  register(registerData: RegisterData): Observable<IUser> {
     const url = `${this.BASE_URL}/register`;
-    return this.http.post<User>(url, registerData);
+    return this.http.post<IUser>(url, registerData);
   }
 
   logout(): Observable<object> {

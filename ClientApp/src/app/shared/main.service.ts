@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Tag } from './models/Tag';
+import { ITag } from './models/tag.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class MainService {
 
   getTags() {
     const url = `${this.TAG_URL}/alltags`;
-    return this.http.get<Tag[]>(url);
+    return this.http.get<ITag[]>(url);
   }
 
 }

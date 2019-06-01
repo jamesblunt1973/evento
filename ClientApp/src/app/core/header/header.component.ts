@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import * as fromReducer from '../state/ui.reducer';
 import * as fromActions from '../state/ui.actions';
 import { getAuthUser } from '../../shared/state/auth.reducer';
-import { User } from '../../shared/models/user.model';
+import { IUser } from '../../shared/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
 
   sidebarStatus: string;
   rightbarStatus: string;
-  user$: Observable<User>;
+  user$: Observable<IUser>;
 
   constructor(private store: Store<fromReducer.UiState>) { }
 

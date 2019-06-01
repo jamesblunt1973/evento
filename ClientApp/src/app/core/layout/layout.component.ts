@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { CloseSidebar, CloseRightbar } from '../state/ui.actions';
 import { getSidebarStatus, getRightbarStatus } from '../state/ui.reducer';
 import { AppState } from '../../app.state';
-import { User } from '../../shared/models/user.model';
+import { IUser } from '../../shared/models/user.model';
 import { getAuthUser } from '../../shared/state/auth.reducer';
 import { Logout } from '../../shared/state/auth.actions';
 
@@ -18,7 +18,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   subscriptions: Array<Subscription> = [];
   sidebarStatus: boolean;
   rightbarStatus: boolean;
-  user$: Observable<User>;
+  user$: Observable<IUser>;
 
   routes = [
     { path: '/', name: 'Home', icon: 'home' },
