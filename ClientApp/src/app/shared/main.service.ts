@@ -18,6 +18,7 @@ export class MainService {
   constructor(private http: HttpClient) { }
 
   getTags() {
+    // chache tags with shareReplay operator
     if (!this.tagsCache$) {
       this.tagsCache$ = this.requestTags().pipe(
         shareReplay(this.CACHE_SIZE)

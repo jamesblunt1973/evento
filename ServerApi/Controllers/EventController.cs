@@ -78,7 +78,7 @@ namespace ServerApi.Controllers
             await context.Events.AddAsync(e);
             await context.SaveChangesAsync();
 
-            return Ok(new { id = e.Id });
+            return Ok(e.Id);
         }
     }
 }

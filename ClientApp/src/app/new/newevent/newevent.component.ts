@@ -23,6 +23,8 @@ export class NeweventComponent implements OnInit {
   markers: Layer[] = [];
   position: LatLng;
   tags$: Observable<ITag[]>;
+  time: string = '';
+  user: IUser;
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     detectRetina: true
   });
@@ -31,8 +33,6 @@ export class NeweventComponent implements OnInit {
     zoom: 15,
     center: this.center
   };
-  time: string = '';
-  user: IUser;
 
   constructor(
       private snackBar: MatSnackBar, 
@@ -103,7 +103,7 @@ export class NeweventComponent implements OnInit {
   }
 
   newEvent() {
-    /* in order to add selected time, to holding date
+    /* in order to add selected time to holding date,
        we split the time string and convert it to 
        corresponding millisecond, then by using setTime
        method, we can obtain the correct date and time.
@@ -119,6 +119,12 @@ export class NeweventComponent implements OnInit {
       this.model.holdingDate.setTime(time);
     }
     this.model.userId = this.user.id;
-    this.eventService.newEvent(this.model);
+    this.eventService.newEvent(this.model).subscribe(id => {
+      this.model = new AppEvent();
+      this.snackBar.open(`Your new event saved successfully {${id}}, please wait for confirmation by moderator.`, 'close');
+    }, error => {
+      console.error(error);
+      this.snackBar.open('Some errors happend!', 'close');
+    });
   }
 }
