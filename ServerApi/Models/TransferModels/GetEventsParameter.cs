@@ -10,10 +10,10 @@ namespace ServerApi.Models.TransferModels
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
         public List<int> Tags { get; set; }
-        public int? OwnerId { get; set; }
+        public int? UserId { get; set; }
         public string Str { get; set; }
         public int Page { get; set; }
-        public int? Count { get; set; }
+        public int Count { get; set; }
         public GetEventsSort Sort { get; set; }
     }
 

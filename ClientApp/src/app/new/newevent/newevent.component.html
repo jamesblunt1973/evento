@@ -50,6 +50,7 @@
       <small>Event Location</small>
       <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" [(leafletCenter)]="center"
         (leafletClick)="mapClick($event)"></div>
+      <br />
       <small>Select atleast one</small>
       <mat-selection-list [(ngModel)]="model.tags" name="tags">
         <mat-list-option *ngFor="let tag of tags$ | async" [value]="tag.id">

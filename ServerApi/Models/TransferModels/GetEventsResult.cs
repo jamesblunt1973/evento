@@ -6,6 +6,6 @@ namespace ServerApi.Models.TransferModels
     public class GetEventsResult
     {
         public int TotalCount { get; set; }
-        public List<Event> Events { get; set; }
+        public List<EventSummury> Events { get; set; }
     }
 }

@@ -11,7 +11,7 @@ export class NewEventService {
   constructor(private http: HttpClient) { }
 
   newEvent(event: IEvent) {
-    const url = `${this.BASE_URL}/NewEvent`;
+    const url = `${this.BASE_URL}/newevent`;
     return this.http.post(url, event);
   }
 

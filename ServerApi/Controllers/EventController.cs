@@ -25,8 +25,8 @@ namespace ServerApi.Controllers
             this.logger = logger;
         }
 
-        [HttpPost("GetEvents")]
-        public async Task<IActionResult> GetEvents([FromForm]GetEventsParameter filter)
+        [HttpPost("getevents")]
+        public async Task<IActionResult> GetEvents(GetEventsParameter filter)
         {
             var result = new GetEventsResult();
 
@@ -46,7 +46,7 @@ namespace ServerApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost("NewEvent")]
+        [HttpPost("newevent")]
         public async Task<IActionResult> NewEvent(NewEventParameter data)
         {
 

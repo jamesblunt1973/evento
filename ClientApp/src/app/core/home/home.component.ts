@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MainService } from '../../shared/main.service';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +11,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public elements = ["content1", "content2", "content3", "content4"];
   drawerContent: any;
+  events: Observable<IEventSummury[]>
 
-
-  constructor() { }
+  constructor(mainService: MainService) { }
 
   ngOnInit() {
     this.drawerContent = document.getElementsByTagName('mat-drawer-container').item(0);

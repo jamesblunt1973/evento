@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -38,7 +39,8 @@ export class NeweventComponent implements OnInit {
       private snackBar: MatSnackBar, 
       private mainService: MainService, 
       private eventService: NewEventService,
-      private store: Store<AuthState>) {
+      private store: Store<AuthState>,
+      private router: Router) {
     var yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     this.yesterday = yesterday;
@@ -122,6 +124,7 @@ export class NeweventComponent implements OnInit {
     this.eventService.newEvent(this.model).subscribe(id => {
       this.model = new AppEvent();
       this.snackBar.open(`Your new event saved successfully {${id}}, please wait for confirmation by moderator.`, 'close');
+      this.router.navigateByUrl('/');
     }, error => {
       console.error(error);
       this.snackBar.open('Some errors happend!', 'close');
