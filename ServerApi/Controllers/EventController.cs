@@ -34,11 +34,24 @@ namespace ServerApi.Controllers
             bool globalVerification = false; // Events should verified first by admin
             bool globalPayment = false; // Events should pay specified fee
 
+            var defaultPhoto = new Photo();
+
             var q = context.Events.Where(a => a.Visible && (!globalVerification || a.Verified) && (!globalPayment || a.Payed));
             // TODO: Move query to repository 
             // TODO: apply conditions
-            var events = await q.ToListAsync();
             var count = q.Count();
+            var events = await q.OrderBy(a => filter.Sort).Skip(filter.Count * filter.Page).Take(filter.Count)
+                .Select(a => new EventSummury()
+                {
+                    Capacity = a.Capacity,
+                    HoldingDate = a.HoldingDate,
+                    Id = a.Id,
+                    Joined = a.Joined,
+                    Tags = a.EventTags.Select(b => b.TagId),
+                    Photo = a.Photos.DefaultIfEmpty(defaultPhoto).First().FileName,
+                    Title = a.Title
+                })
+                .ToListAsync();
 
             result.TotalCount = count;
             result.Events = events;

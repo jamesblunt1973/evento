@@ -6,6 +6,14 @@ namespace ServerApi.Models.DomainModels
 {
     public class Photo
     {
+        public Photo()
+        {
+            Id = 0;
+            EventId = 0;
+            FileName = "";
+            Description = "";
+            Visibile = false;
+        }
         public int Id { get; set; }
 
         [Required]
