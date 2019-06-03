@@ -1,14 +1,47 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-/ServerApi/obj
-/ServerApi/bin
-/ServerApi/Migrations
-/ServerApi/.vs
-/ServerApi/*.sln
-
-# IDE - VSCode
-.vscode/*
-.history/*
+/obj
+/bin
+/Migrations
+/.vs
+/*.sln
 
 # IDE - Visual Studio
 .vs/*
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/ClientApp/dist
+/ClientApp/tmp
+/ClientApp/out-tsc
+
+# user files
+/ClientApp/src/assets/files
+
+# dependencies
+/ClientApp/node_modules
+
+# profiling files
+/ClientApp/chrome-profiler-events.json
+/ClientApp/speed-measure-plugin.json
+
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/ClientApp/.sass-cache
+/ClientApp/connect.lock
+/ClientApp/coverage
+/ClientApp/libpeerconnection.log
+/ClientApp/npm-debug.log
+/ClientApp/yarn-error.log
+/ClientApp/testem.log
+/ClientApp/typings
+

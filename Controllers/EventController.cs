@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace ServerApi.Controllers
         }
 
         [HttpPost("getevents")]
-        public async Task<IActionResult> GetEvents(GetEventsParameter filter)
+        public async Task<IActionResult> GetEvents(GetEventsParameter data)
         {
             var result = new GetEventsResult();
 
@@ -38,9 +39,57 @@ namespace ServerApi.Controllers
 
             var q = context.Events.Where(a => a.Visible && (!globalVerification || a.Verified) && (!globalPayment || a.Payed));
             // TODO: Move query to repository 
-            // TODO: apply conditions
+
+            if (data.From.HasValue || data.To.HasValue)
+            {
+                if (data.From.HasValue)
+                {
+                    q = q.Where(a => a.HoldingDate >= data.From.Value);
+                }
+                // If date to is specified, query should returns the events before that
+                // and if not, we just select the events for the specified date (from)
+                var to = data.To.HasValue ? data.To : data.From.Value.AddDays(1);
+                q = q.Where(a => a.HoldingDate <= to);
+            }
+            else
+            {
+                // Do not return archived events at first
+                q = q.Where(a => a.HoldingDate >= DateTime.Now);
+            }
+
+            if (!string.IsNullOrEmpty(data.Str))
+                q = q.Where(a => a.Title.Contains(data.Str));
+
+            if (data.Tags.Count > 0)
+            {
+                // TODO: Check generated query and execution plan
+                q = q.Where(a => a.EventTags.Any(b => data.Tags.Contains(b.TagId)));
+            }
+
+            if (!string.IsNullOrEmpty(data.UserId))
+            {
+                q = q.Where(a => a.UserId == data.UserId);
+            }
+
             var count = q.Count();
-            var events = await q.OrderBy(a => filter.Sort).Skip(filter.Count * filter.Page).Take(filter.Count)
+
+            switch (data.Sort)
+            {
+                case GetEventsSort.Latest:
+                    q = q.OrderBy(a => a.HoldingDate);
+                    break;
+                case GetEventsSort.Popular:
+                    q = q.OrderByDescending(a => a.Activities.Count);
+                    break;
+                case GetEventsSort.Nearest:
+                    // TODO: create a database function which take a geo location as input and sort the events by distance
+                    q = q.OrderBy(a => Distance(data.Latitude, data.Longitude, a.Latitude, a.Longitude));
+                    break;
+                default:
+                    break;
+            }
+
+            var events = await q.Skip(data.Count * data.Page).Take(data.Count)
                 .Select(a => new EventSummury()
                 {
                     Capacity = a.Capacity,
@@ -88,6 +137,7 @@ namespace ServerApi.Controllers
                 VisitCount = 0
             };
 
+            // TODO: Move to repository
             await context.Events.AddAsync(e);
             await context.SaveChangesAsync();
 

@@ -5,7 +5,7 @@ import { shareReplay, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { ITag } from './models/tag.model';
 import { IGetEventsParameter } from './models/getEventsParameter';
-import { IEventSummury } from './models/eventSummury';
+import { IGetEventsResult } from './models/getEventsResult';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +39,6 @@ export class MainService {
 
   getEvents(data: IGetEventsParameter) {
     const url = `${this.EVENT_URL}/getevents`;
-    this.http.post<IEventSummury[]>(url, data);
+    return this.http.post<IGetEventsResult>(url, data);
   }
 }
