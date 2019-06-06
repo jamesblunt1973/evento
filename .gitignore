@@ -3,6 +3,7 @@
 /obj
 /bin
 /Migrations
+/wwwroot
 /.vs
 /*.sln
 
