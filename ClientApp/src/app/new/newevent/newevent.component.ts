@@ -51,19 +51,7 @@ export class NeweventComponent implements OnInit {
       this.center = latLng(res.coords.latitude, res.coords.longitude);
       this.setModelPosition(this.center);
       this.addMarker(latLng(res.coords.latitude, res.coords.longitude));
-    }, error => {
-      switch (error.code) {
-        case 1:
-          console.log('Permission Denied');
-          break;
-        case 2:
-          console.log('Position Unavailable');
-          break;
-        case 3:
-          console.log('Timeout');
-          break;
-      }
-    });
+    }, this.mainService.navigatorGeolocationError);
 
     this.tags$ = this.mainService.getTags();
 

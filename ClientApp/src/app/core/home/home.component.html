@@ -1,8 +1,9 @@
-<div>
-  <h1>Welcome to Online Store</h1>
-  <input type="button" value="Add Content" (click)="addContent()" />
-  <input type="button" value="Remove Content" (click)="removeContent()" />
-</div>
-<div *ngFor="let c of elements" class="element">
-  {{c}}
+<app-main-search></app-main-search>
+<div class="events-container">
+  <mat-card class="title">Total Results: {{totalCount}}</mat-card>
+  <div fxLayout="row wrap" fxLayoutAlign="center start">
+    <div *ngFor="let event of events">
+      <app-event [event]="event" [tag]="tags[event.tags[0]]"></app-event>
+    </div>
+  </div>
 </div>

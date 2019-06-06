@@ -5,11 +5,22 @@
   <main fxLayout="column" fxFlex="1">
     <mat-drawer-container fxFlex="1" (backdropClick)="onSidebarClosing()">
       <mat-drawer mode="over" [opened]="sidebarStatus" position="start">
-        <mat-nav-list>
-          <mat-list-item *ngFor="let route of routes" (click)="closeSidebar()">
-            <mat-icon>{{route.icon}}</mat-icon>&emsp;{{route.name}}
-          </mat-list-item>
-        </mat-nav-list>
+
+          filter items<br />
+          from:
+          <br />
+          to:
+          <br />
+          str:
+          <br />
+          tags:
+          <br />
+          page:
+          <br />
+          count: 20
+          <br />
+          sort:
+
       </mat-drawer>
       <mat-drawer mode="over" [opened]="rightbarStatus" position="end">
         <mat-nav-list>

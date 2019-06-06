@@ -8,13 +8,17 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LayoutComponent } from './layout/layout.component';
 import { uiReducer } from './state/ui.reducer';
+import { MainSearchComponent } from './main-search/main-search.component';
+import { EventComponent } from './event/event.component';
 
 @NgModule({
   declarations: [
     HomeComponent, 
     HeaderComponent, 
     FooterComponent, 
-    LayoutComponent
+    LayoutComponent,
+    MainSearchComponent,
+    EventComponent
   ],
   imports: [
     SharedModule,

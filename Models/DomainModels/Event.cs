@@ -1,12 +1,12 @@
-using ServerApi.Models.TransferModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Evento.Models;
 
 namespace ServerApi.Models.DomainModels
 {
-    public class Event: NewEventParameter
+    public class Event: BaseEvent
     {
         public int Id { get; set; }
 

@@ -20,13 +20,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   rightbarStatus: boolean;
   user$: Observable<IUser>;
 
-  routes = [
-    { path: '/', name: 'Home', icon: 'home' },
-    { path: 'one', name: 'Notifications', icon: 'alarm' },
-    { path: 'two', name: 'Assignments', icon: 'assignment' },
-    { path: 'three', name: 'Search', icon: 'search' }
-  ];
-
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {

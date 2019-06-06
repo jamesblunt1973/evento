@@ -35,8 +35,6 @@ namespace ServerApi.Controllers
             bool globalVerification = false; // Events should verified first by admin
             bool globalPayment = false; // Events should pay specified fee
 
-            var defaultPhoto = new Photo();
-
             var q = context.Events.Where(a => a.Visible && (!globalVerification || a.Verified) && (!globalPayment || a.Payed));
             // TODO: Move query to repository 
 
@@ -83,7 +81,6 @@ namespace ServerApi.Controllers
                     break;
                 case GetEventsSort.Nearest:
                     // TODO: create a database function which take a geo location as input and sort the events by distance
-                    q = q.OrderBy(a => Distance(data.Latitude, data.Longitude, a.Latitude, a.Longitude));
                     break;
                 default:
                     break;
@@ -97,13 +94,12 @@ namespace ServerApi.Controllers
                     Id = a.Id,
                     Joined = a.Joined,
                     Tags = a.EventTags.Select(b => b.TagId),
-                    Photo = a.Photos.DefaultIfEmpty(defaultPhoto).First().FileName,
+                    Photo = a.Photos.DefaultIfEmpty().First().FileName,
                     Title = a.Title
-                })
-                .ToListAsync();
+                }).ToListAsync();
+            result.Events = events;
 
             result.TotalCount = count;
-            result.Events = events;
 
             return Ok(result);
         }
@@ -134,8 +130,14 @@ namespace ServerApi.Controllers
                 Payed = !globalPayment,
                 Verified = !globalVerification,
                 Visible = true,
-                VisitCount = 0
+                VisitCount = 0,
+                EventTags = new List<EventTag>()
             };
+
+            foreach (var tagId in data.Tags)
+            {
+                e.EventTags.Add(new EventTag() { TagId = tagId });
+            }
 
             // TODO: Move to repository
             await context.Events.AddAsync(e);

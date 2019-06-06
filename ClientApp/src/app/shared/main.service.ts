@@ -33,12 +33,33 @@ export class MainService {
   private requestTags() {
     const url = `${this.TAG_URL}/alltags`;
     return this.http.get<ITag[]>(url).pipe(
-      map(res => res)
+      map(res => {
+        let tags: ITag[] = [];
+        for (var i in res) {
+          let tag = res[i];
+          tags[tag.id] = tag;
+        }
+        return tags;
+      })
     );
   }
 
   getEvents(data: IGetEventsParameter) {
     const url = `${this.EVENT_URL}/getevents`;
     return this.http.post<IGetEventsResult>(url, data);
+  }
+
+  navigatorGeolocationError(error: PositionError) {
+    switch (error.code) {
+      case 1:
+        console.log('Permission Denied');
+        break;
+      case 2:
+        console.log('Position Unavailable');
+        break;
+      case 3:
+        console.log('Timeout');
+        break;
+    }
   }
 }
