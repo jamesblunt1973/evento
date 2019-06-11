@@ -2,14 +2,17 @@
   width: 360px;
   margin: 10px auto;
   position: relative;
+
   input {
     width: 360px;
     height: 35px;
     font-size: 18px;
-    border: 1px solid #ccc;
     padding: 0 5px;
-    border-radius: 2px;
+    border: 0;
+    border-radius: 4px;
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
   }
+
   mat-icon {
     position: absolute;
     top: 5px;

@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { IEvent } from './models/event.model';
 
 @Injectable()
-export class NewEventService {
+export class EventsService {
 
   private BASE_URL = environment.apiUrl + 'event';
 

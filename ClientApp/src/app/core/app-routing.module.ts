@@ -5,7 +5,7 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full'},
   { path: 'auth', loadChildren: '../auth/auth.module#AuthModule' },
-  { path: 'new', loadChildren: '../new/new.module#NewModule' }
+  { path: 'events', loadChildren: '../events/events.module#EventsModule' }
 ];
 
 @NgModule({

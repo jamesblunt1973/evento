@@ -8,15 +8,15 @@ import { AppEvent } from '../models/event.model';
 import { AuthState, getAuthUser } from '../../shared/state/auth.reducer';
 import { MainService } from '../../shared/main.service';
 import { ITag } from '../../shared/models/tag.model';
-import { NewEventService } from '../newevent.service';
+import { EventsService } from '../events.service';
 import { IUser } from '../../shared/models/user.model';
 
 @Component({
   selector: 'app-newevent',
-  templateUrl: './newevent.component.html',
-  styleUrls: ['./newevent.component.scss']
+  templateUrl: './new-event.component.html',
+  styleUrls: ['./new-event.component.scss']
 })
-export class NeweventComponent implements OnInit {
+export class NewEventComponent implements OnInit {
 
   private yesterday: Date;
   model = new AppEvent();
@@ -36,11 +36,11 @@ export class NeweventComponent implements OnInit {
   };
 
   constructor(
-      private snackBar: MatSnackBar, 
-      private mainService: MainService, 
-      private eventService: NewEventService,
-      private store: Store<AuthState>,
-      private router: Router) {
+    private snackBar: MatSnackBar,
+    private mainService: MainService,
+    private eventService: EventsService,
+    private store: Store<AuthState>,
+    private router: Router) {
     var yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     this.yesterday = yesterday;

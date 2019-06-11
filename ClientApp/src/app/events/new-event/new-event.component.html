@@ -14,7 +14,7 @@
       <div fxLayout="row">
         <mat-form-field fxFlex="1 1 50%">
           <input [matDatepicker]="datePicker" matInput name="holdingDate" required [(ngModel)]="model.holdingDate"
-                 placeholder="Pick event date" [matDatepickerFilter]="dateFilter">
+            (click)="datePicker.open()" placeholder="Pick event date" [matDatepickerFilter]="dateFilter">
           <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
           <mat-datepicker touchUi #datePicker></mat-datepicker>
         </mat-form-field>
