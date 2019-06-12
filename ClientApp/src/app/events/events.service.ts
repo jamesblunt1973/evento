@@ -12,12 +12,12 @@ export class EventsService {
   constructor(private http: HttpClient) { }
 
   newEvent(event: IEvent) {
-    const url = `${this.BASE_URL}/newevent`;
+    const url = `${this.BASE_URL}/newEvent`;
     return this.http.post<number>(url, event);
   }
 
   getUserEvents() { // get events for authenticated user
-    const url = `${this.BASE_URL}/getuserevents`;
+    const url = `${this.BASE_URL}/getUserEvents`;
     return this.http.get<IEventSummury[]>(url);
   }
 

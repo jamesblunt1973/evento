@@ -31,7 +31,7 @@ export class MainService {
   }
 
   private requestTags() {
-    const url = `${this.TAG_URL}/alltags`;
+    const url = `${this.TAG_URL}/allTags`;
     return this.http.get<ITag[]>(url).pipe(
       map(res => {
         let tags: ITag[] = [];
@@ -45,7 +45,7 @@ export class MainService {
   }
 
   getEvents(data: IGetEventsParameter) {
-    const url = `${this.EVENT_URL}/getevents`;
+    const url = `${this.EVENT_URL}/getEvents`;
     return this.http.post<IGetEventsResult>(url, data);
   }
 

@@ -24,15 +24,14 @@ namespace ServerApi.Controllers
             this.logger = logger;
         }
 
-        [HttpGet("alltags")]
-        [AllowAnonymous]
+        [HttpGet("allTags")]
         public async Task<IActionResult> GetTags()
         {
             var tags = await context.Tags.ToListAsync<Tag>();
             return Ok(tags);
         }
 
-        [HttpPost("new")]
+        [HttpPost("newEvent")]
         public async Task<IActionResult> NewTag(Tag tag)
         {
             await context.Tags.AddAsync(tag);

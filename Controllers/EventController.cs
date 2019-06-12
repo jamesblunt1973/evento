@@ -28,8 +28,7 @@ namespace ServerApi.Controllers
             this.logger = logger;
         }
 
-        [HttpPost("getevents")]
-        [AllowAnonymous]
+        [HttpPost("getEvents")]
         public async Task<IActionResult> GetEvents(GetEventsParameter data)
         {
             var result = new GetEventsResult();
@@ -107,7 +106,7 @@ namespace ServerApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost("newevent")]
+        [HttpPost("newEvent")]
         public async Task<IActionResult> NewEvent(NewEventParameter data)
         {
 
@@ -156,8 +155,7 @@ namespace ServerApi.Controllers
             return Ok(e.Id);
         }
 
-        [HttpGet("getuserevents")]
-        [AllowAnonymous]
+        [HttpGet("getUserEvents")]
         public async Task<IActionResult> GetUserEvents()
         {
             if (!User.Identity.IsAuthenticated)

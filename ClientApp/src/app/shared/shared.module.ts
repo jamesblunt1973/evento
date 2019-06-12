@@ -7,8 +7,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { authReducer } from './state/auth.reducer';
 import { AuthEffects } from './state/auth.effects';
-import { AuthService } from './auth.service';
-
+import { AuthInterceptorProvider } from './auth-interceptor';
 
 @NgModule({
   declarations: [],
@@ -18,7 +17,7 @@ import { AuthService } from './auth.service';
     StoreModule.forFeature('authState', authReducer),
     EffectsModule.forFeature([AuthEffects])
   ],
-  providers: [],
+  providers: [AuthInterceptorProvider],
   exports: [
     CommonModule,
     MaterialComponentsModule,
