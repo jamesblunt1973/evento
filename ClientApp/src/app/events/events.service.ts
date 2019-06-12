@@ -15,4 +15,9 @@ export class EventsService {
     return this.http.post(url, event);
   }
 
+  getUserEvents() { // get events for authenticated user
+    const url = `${this.BASE_URL}/getuserevents`;
+    return this.http.get(url);
+  }
+
 }

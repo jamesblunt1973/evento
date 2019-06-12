@@ -7,12 +7,12 @@ import { SharedModule } from '../shared/shared.module';
 import { NewRoutingModule } from './events-routing.module';
 import { NewEventComponent } from './new-event/new-event.component';
 import { EventsService } from './events.service';
-import { EventsComponent } from './events/events.component';
+import { ListComponent } from './list/list.component';
 
 @NgModule({
   declarations: [
     NewEventComponent,
-    EventsComponent
+    ListComponent
   ],
   imports: [
     CommonModule,

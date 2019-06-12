@@ -3,19 +3,22 @@
 /obj
 /bin
 /Migrations
-/wwwroot
-/.vs
-/*.sln
 
 # IDE - Visual Studio
+/.vs
+/*.sln
 .vs/*
 
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# IDE - VSCode
+/.vscode
+.vscode/*
+.history/*
 
 # compiled output
 /ClientApp/dist
 /ClientApp/tmp
 /ClientApp/out-tsc
+/wwwroot
 
 # user files
 /ClientApp/src/assets/files
@@ -26,15 +29,6 @@
 # profiling files
 /ClientApp/chrome-profiler-events.json
 /ClientApp/speed-measure-plugin.json
-
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
 
 # misc
 /ClientApp/.sass-cache

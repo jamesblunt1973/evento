@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NewEventComponent } from './new-event/new-event.component';
-import { EventsComponent } from './events/events.component';
+import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
-  { path: '', component: EventsComponent },
+  { path: '', component: ListComponent },
   { path: 'new', component: NewEventComponent }
 ];
 

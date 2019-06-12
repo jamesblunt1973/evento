@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,7 @@ namespace ServerApi.Controllers
         }
 
         [HttpPost("getevents")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetEvents(GetEventsParameter data)
         {
             var result = new GetEventsResult();
@@ -112,6 +115,13 @@ namespace ServerApi.Controllers
             bool globalVerification = false; // Events should verified first by admin
             bool globalPayment = false; // Events should pay specified fee
 
+            // authentication
+            if (!User.Identity.IsAuthenticated)
+                return BadRequest("User not found!");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // userId = userManager.GetUserId(User)
+            // var user = await userManager.GetUserAsync(User); // get user from database
+
             // TODO: use auto mapper
             var e = new Event()
             {
@@ -123,7 +133,7 @@ namespace ServerApi.Controllers
                 Link = data.Link,
                 Longitude = data.Longitude,
                 Title = data.Title,
-                UserId = data.UserId,
+                UserId = userId,
                 Joined = 0,
                 Rate = 0,
                 Votes = 0,
@@ -144,6 +154,27 @@ namespace ServerApi.Controllers
             await context.SaveChangesAsync();
 
             return Ok(e.Id);
+        }
+
+        [HttpGet("getuserevents")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUserEvents()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return BadRequest("User not found!");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var events = await context.Events.Where(a => a.UserId == userId)
+                .Select(a => new EventSummury()
+                {
+                    Capacity = a.Capacity,
+                    HoldingDate = a.HoldingDate,
+                    Id = a.Id,
+                    Joined = a.Joined,
+                    Tags = a.EventTags.Select(b => b.TagId),
+                    Photo = a.Photos.DefaultIfEmpty().First().FileName,
+                    Title = a.Title
+                }).ToListAsync();
+            return Ok(events);
         }
     }
 }
