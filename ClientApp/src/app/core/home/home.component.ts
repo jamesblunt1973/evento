@@ -51,9 +51,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getEvents() {
-    this.mainService.getEvents(this.filter).subscribe(res => {
+    let sub = this.mainService.getEvents(this.filter).subscribe(res => {
       this.totalCount = res.totalCount;
       this.events = res.events;
     });
+    this.subscriptions.push(sub);
   }
 }

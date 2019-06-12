@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { EventsService } from '../events.service';
+import { IEventSummury } from '../../shared/models/eventSummury';
 
 @Component({
   selector: 'app-list',
@@ -8,10 +10,12 @@ import { EventsService } from '../events.service';
 })
 export class ListComponent implements OnInit {
 
+  events$: Observable<IEventSummury[]>;
+
   constructor(private service: EventsService) { }
 
   ngOnInit() {
-    this.service.getUserEvents();
+    this.events$ = this.service.getUserEvents();
   }
 
 }

@@ -1,3 +1,8 @@
-<p>
-  list works!
-</p>
+<div class="narrow-form">
+  <mat-nav-list>
+    <mat-list-item *ngFor="let event of events$ | async">
+      <img matListAvatar src="../../../assets/files/events/{{event.id}}/_{{event.photo}}.jpg" alt="{{event.title}}" />
+      <a matLine href="/events/{{event.id}}">{{event.title}}</a>
+    </mat-list-item>
+  </mat-nav-list>
+</div>
