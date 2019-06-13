@@ -16,6 +16,11 @@ export class EventsService {
     return this.http.post<number>(url, event);
   }
 
+  getEvent(id: string) {
+    const url = `${this.BASE_URL}/getEvent/${id}`;
+    return this.http.get<IEvent>(url);
+  }
+
   getUserEvents() { // get events for authenticated user
     const url = `${this.BASE_URL}/getUserEvents`;
     return this.http.get<IEventSummury[]>(url);

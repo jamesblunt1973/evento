@@ -8,11 +8,13 @@ import { NewRoutingModule } from './events-routing.module';
 import { NewEventComponent } from './new-event/new-event.component';
 import { EventsService } from './events.service';
 import { ListComponent } from './list/list.component';
+import { EditEventComponent } from './edit-event/edit-event.component';
 
 @NgModule({
   declarations: [
     NewEventComponent,
-    ListComponent
+    ListComponent,
+    EditEventComponent
   ],
   imports: [
     CommonModule,

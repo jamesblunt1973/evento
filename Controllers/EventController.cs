@@ -106,6 +106,19 @@ namespace ServerApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("getEvent/{id}")]
+        public async Task<IActionResult> GetEvent(int id)
+        {
+            // authentication
+            if (!User.Identity.IsAuthenticated)
+                return BadRequest("User not found!");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var e = await context.Events.SingleOrDefaultAsync(a => a.Id == id);
+            if (e.UserId != userId)
+                return Unauthorized($"Event with id {id} is not yours to edit.");
+            return Ok(e);
+        }
+
         [HttpPost("newEvent")]
         public async Task<IActionResult> NewEvent(NewEventParameter data)
         {
