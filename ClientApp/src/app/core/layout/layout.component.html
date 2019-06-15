@@ -32,21 +32,21 @@
           <ng-template #loggedOutLinks>
             <mat-list-item (click)="closeRightbar()">
               <mat-icon>vpn_key</mat-icon>
-              <a routerLink="auth/login">&emsp;Login</a>
+              <a routerLink="/auth/login">&emsp;Login</a>
             </mat-list-item>
             <mat-list-item (click)="closeRightbar()">
               <mat-icon>how_to_reg</mat-icon>
-              <a routerLink="auth/register">&emsp;Register</a>
+              <a routerLink="/auth/register">&emsp;Register</a>
             </mat-list-item>
           </ng-template>
           <ng-template #loggedInLinks>
             <mat-list-item (click)="closeRightbar()">
               <mat-icon>event_available</mat-icon>
-              <a routerLink="events/new">&emsp;New Event</a>
+              <a routerLink="/events/new">&emsp;New Event</a>
             </mat-list-item>
             <mat-list-item (click)="closeRightbar()">
               <mat-icon>notes</mat-icon>
-              <a routerLink="events">&emsp;Manage Events</a>
+              <a routerLink="/events">&emsp;Manage Events</a>
             </mat-list-item>
             <mat-list-item (click)="logout()">
               <mat-icon>logout</mat-icon>&emsp;Logout

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -113,14 +114,30 @@ namespace ServerApi.Controllers
             if (!User.Identity.IsAuthenticated)
                 return BadRequest("User not found!");
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var e = await context.Events.SingleOrDefaultAsync(a => a.Id == id);
+            var e = await context.Events
+                .Include("EventTags")
+                .SingleOrDefaultAsync(a => a.Id == id);
             if (e.UserId != userId)
                 return Unauthorized($"Event with id {id} is not yours to edit.");
-            return Ok(e);
+            var res = new EventDto();
+            // use auto mapper
+            res.Id = e.Id;
+            res.Capacity = e.Capacity;
+            res.Description = e.Description;
+            res.Duration = e.Duration;
+            res.HoldingDate = e.HoldingDate.Date;
+            res.Latitude = e.Latitude;
+            res.Link = e.Link;
+            res.Longitude = e.Longitude;
+            res.Tags = e.EventTags.Select(a => a.TagId).ToArray();
+            res.Time = e.HoldingDate.ToString("hh:mm tt");
+            res.Title = e.Title;
+            res.UserId = e.UserId;
+            return Ok(res);
         }
 
         [HttpPost("newEvent")]
-        public async Task<IActionResult> NewEvent(NewEventParameter data)
+        public async Task<IActionResult> NewEvent(EventDto data)
         {
 
             // TODO: get GlobalVerification & GlobalPayment from settings
@@ -134,13 +151,14 @@ namespace ServerApi.Controllers
             // userId = userManager.GetUserId(User)
             // var user = await userManager.GetUserAsync(User); // get user from database
 
+            var ts = DateTime.ParseExact(data.Time, "hh:mm tt", CultureInfo.InvariantCulture).TimeOfDay;
             // TODO: use auto mapper
             var e = new Event()
             {
                 Capacity = data.Capacity,
                 Description = data.Description,
                 Duration = data.Duration,
-                HoldingDate = data.HoldingDate,
+                HoldingDate = data.HoldingDate.Add(ts),
                 Latitude = data.Latitude,
                 Link = data.Link,
                 Longitude = data.Longitude,

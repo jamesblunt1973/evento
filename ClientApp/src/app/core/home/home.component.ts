@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   events: IEventSummury[];
   tags: ITag[];
   totalCount: number;
-  subscriptions: Array<Subscription> = [];
+  private subscriptions: Array<Subscription> = [];
 
   constructor(private mainService: MainService) { }
 

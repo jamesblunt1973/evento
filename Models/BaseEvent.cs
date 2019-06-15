@@ -8,6 +8,8 @@ namespace Evento.Models
 {
     public abstract class BaseEvent
     {
+        public int Id { get; set; }
+
         [Required]
         public string UserId { get; set; }
 

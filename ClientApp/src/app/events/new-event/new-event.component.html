@@ -4,7 +4,7 @@
       <div mat-card-avatar>
         <mat-icon color="warn">event</mat-icon>
       </div>
-      <mat-card-title>New Event</mat-card-title>
+      <mat-card-title>{{ model.id ? 'Edit Event' : 'New Event' }}</mat-card-title>
       <mat-card-subtitle>Let the world know!</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content fxLayout="column">
@@ -19,7 +19,7 @@
           <mat-datepicker touchUi #datePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field fxFlex="1 1 50%">
-          <input [ngxTimepicker]="timePicker" matInput name="time" [(ngModel)]="time" placeholder="Pick event time">
+          <input [ngxTimepicker]="timePicker" matInput name="model.time" required [(ngModel)]="model.time" placeholder="Pick event time">
           <ngx-material-timepicker-toggle matSuffix [for]="timePicker">
             <svg height="16px" viewBox="0 0 24 24" width="16px" xmlns="http://www.w3.org/2000/svg"
                  ngxMaterialTimepickerToggleIcon>
@@ -51,7 +51,7 @@
            (leafletClick)="mapClick($event)"></div>
       <br />
       <small>Select atleast one</small>
-      <mat-selection-list [(ngModel)]="model.tags" name="tags">
+      <mat-selection-list required [(ngModel)]="model.tags" name="tags">
         <div *ngFor="let tag of tags$ | async">
           <mat-list-option *ngIf="tag" [value]="tag.id">
             <img matListAvatar src="../../../assets/files/tags/{{tag.id}}.jpg" alt="{{tag.title}}" />

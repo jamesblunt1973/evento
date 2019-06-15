@@ -2,7 +2,13 @@
   <mat-nav-list>
     <mat-list-item *ngFor="let event of events$ | async">
       <img matListAvatar src="../../../assets/files/events/{{event.id}}/_{{event.photo}}" alt="{{event.title}}" />
-      <a matLine [routerLink]="['/events/edit', event.id]">{{event.title}}</a>
+      <a matLine routerLink="/event/{{event.id}}">{{event.title}}</a>
+      <button routerLink="/events/photos/{{event.id}}" mat-icon-button title="Add photo or video">
+        <mat-icon>photo</mat-icon>
+      </button>
+      <button [routerLink]="['/events/new', {id: event.id}]" mat-icon-button title="Edit event">
+        <mat-icon>edit</mat-icon>
+      </button>
     </mat-list-item>
   </mat-nav-list>
 </div>

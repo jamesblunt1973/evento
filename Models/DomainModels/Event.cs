@@ -8,8 +8,6 @@ namespace ServerApi.Models.DomainModels
 {
     public class Event: BaseEvent
     {
-        public int Id { get; set; }
-
         [Required]
         [Column(TypeName = "smalldatetime")]
         public override DateTime HoldingDate { get; set; }
