@@ -17,19 +17,20 @@ namespace ServerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EventController : ControllerBase
+    public class EventsController : ControllerBase
     {
         private readonly ILogger logger;
         private readonly UserManager<User> userManager;
         private readonly DataContext context;
-        public EventController(ILogger logger, UserManager<User> userManager, DataContext context)
+        public EventsController(ILogger logger, UserManager<User> userManager, DataContext context)
         {
             this.context = context;
             this.userManager = userManager;
             this.logger = logger;
         }
 
-        [HttpPost("getEvents")]
+        // POST api/events
+        [HttpPost]
         public async Task<IActionResult> GetEvents(GetEventsParameter data)
         {
             var result = new GetEventsResult();
@@ -107,7 +108,8 @@ namespace ServerApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("getEvent/{id}")]
+        // GET api/events/5
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetEvent(int id)
         {
             // authentication
@@ -136,7 +138,16 @@ namespace ServerApi.Controllers
             return Ok(res);
         }
 
-        [HttpPost("newEvent")]
+        // GET api/events/5/photos
+        [HttpGet("{id}/photos")]
+        public async Task<IActionResult> GetEventPhotos(int id)
+        {
+            var list = await context.Photos.Where(a => a.EventId == id).OrderBy(a => a.Id).ToListAsync();
+            return Ok(list);
+        }
+
+        // POST api/events/new
+        [HttpPost("new")]
         public async Task<IActionResult> NewEvent(EventDto data)
         {
 
@@ -186,7 +197,7 @@ namespace ServerApi.Controllers
             return Ok(e.Id);
         }
 
-        [HttpGet("getUserEvents")]
+        [HttpGet("userEvents")]
         public async Task<IActionResult> GetUserEvents()
         {
             if (!User.Identity.IsAuthenticated)

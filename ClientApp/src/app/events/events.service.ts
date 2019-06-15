@@ -5,23 +5,24 @@ import { shareReplay } from 'rxjs/operators';
 import { IEvent } from './models/event.model';
 import { environment } from '../../environments/environment';
 import { IEventSummury } from '../shared/models/eventSummury';
+import { IPhoto } from './models/photo.model';
 
 @Injectable()
 export class EventsService {
 
-  private BASE_URL = environment.apiUrl + 'event';
+  private BASE_URL = environment.apiUrl + 'events';
   private CACHE_SIZE = 1;
   private userEventsCache$: Observable<IEventSummury[]>;
 
   constructor(private http: HttpClient) { }
 
   newEvent(event: IEvent) {
-    const url = `${this.BASE_URL}/newEvent`;
+    const url = `${this.BASE_URL}/new`;
     return this.http.post<number>(url, event);
   }
 
   getEvent(id: number) {
-    const url = `${this.BASE_URL}/getEvent/${id}`;
+    const url = `${this.BASE_URL}/${id}`;
     return this.http.get<IEvent>(url);
   }
 
@@ -37,7 +38,12 @@ export class EventsService {
   }
 
   private requestUserEvents() {
-    const url = `${this.BASE_URL}/getUserEvents`;
+    const url = `${this.BASE_URL}/userEvents`;
     return this.http.get<IEventSummury[]>(url);
+  }
+
+  getEventPhotos(id: number) {
+    const url = `${this.BASE_URL}/${id}/photos`;
+    return this.http.get<IPhoto[]>(url);
   }
 }

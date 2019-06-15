@@ -12,7 +12,7 @@ import { IGetEventsResult } from './models/getEventsResult';
 })
 export class MainService {
 
-  private EVENT_URL = environment.apiUrl + 'event';
+  private EVENT_URL = environment.apiUrl + 'events';
   private TAG_URL = environment.apiUrl + 'tag';
   private CACHE_SIZE = 1;
   private tagsCache$: Observable<ITag[]>;
@@ -45,7 +45,7 @@ export class MainService {
   }
 
   getEvents(data: IGetEventsParameter) {
-    const url = `${this.EVENT_URL}/getEvents`;
+    const url = `${this.EVENT_URL}`;
     return this.http.post<IGetEventsResult>(url, data);
   }
 
