@@ -190,6 +190,32 @@ namespace ServerApi.Controllers
                 e.EventTags.Add(new EventTag() { TagId = tagId });
             }
 
+            // move pictures
+            // string webRootPath = hostingEnvironment.WebRootPath;
+            // var itemPath = Path.Combine(webRootPath, "assets\\items\\" + item.Id + "\\");
+            // Directory.CreateDirectory(itemPath);
+            // var tempPath = Path.Combine(webRootPath, "assets\\temp\\");
+            // foreach (var img in data.Images)
+            // {
+            //     System.IO.File.Move(tempPath + img, itemPath + img);
+            //     System.IO.File.Move(tempPath + "_" + img, itemPath + "_" + img);
+            // }
+            // using (var stream = new FileStream(itemPath + data.Images[0], FileMode.Open))
+            // {
+            //     var img = Image.FromStream(stream);
+            //     var w = 300;
+            //     var h = Convert.ToInt32(w * 1.0 / img.Width * img.Height);
+            //     if (h > w)
+            //     {
+            //         h = 300;
+            //         w = Convert.ToInt32(h * 1.0 / img.Height * img.Width);
+            //     }
+            //     var bmp = new Bitmap(img, w, h);
+            //     bmp.Save(itemPath + "thumb.jpg", ImageFormat.Jpeg);
+            //     bmp.Dispose();
+            //     img.Dispose();
+            // }
+
             // TODO: Move to repository
             await context.Events.AddAsync(e);
             await context.SaveChangesAsync();
@@ -215,6 +241,47 @@ namespace ServerApi.Controllers
                     Title = a.Title
                 }).ToListAsync();
             return Ok(events);
+        }
+
+        [HttpPost("upload"), DisableRequestSizeLimit]
+        public ActionResult Upload()
+        {
+            var fileNames = new List<string>();
+            foreach (var file in Request.Form.Files)
+            {
+                string folderName = "assets\\temp\\";
+                string webRootPath = hostingEnvironment.WebRootPath;
+                string newPath = Path.Combine(webRootPath, folderName);
+                if (!Directory.Exists(newPath))
+                {
+                    Directory.CreateDirectory(newPath);
+                }
+                if (file.Length > 0)
+                {
+                    var ext = Path.GetExtension(file.Name);
+                    ext = Path.GetExtension(file.FileName);
+                    //string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fileName = DateTime.Now.Ticks + ext;
+                    using (var stream = new FileStream(newPath + fileName, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                        var img = Image.FromStream(stream);
+                        var w = 85;
+                        var h = Convert.ToInt32(w * 1.0 / img.Width * img.Height);
+                        if (h > w)
+                        {
+                            h = 85;
+                            w = Convert.ToInt32(h * 1.0 / img.Height * img.Width);
+                        }
+                        var bmp = new Bitmap(img, w, h);
+                        bmp.Save(newPath + "_" + fileName);
+                        bmp.Dispose();
+                        img.Dispose();
+                    }
+                    fileNames.Add(fileName);
+                }
+            }
+            return Json(fileNames);
         }
     }
 }

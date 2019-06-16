@@ -9,12 +9,14 @@ import { NewEventComponent } from './new-event/new-event.component';
 import { EventsService } from './events.service';
 import { ListComponent } from './list/list.component';
 import { PhotosComponent } from './photos/photos.component';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
   declarations: [
     NewEventComponent,
     ListComponent,
-    PhotosComponent
+    PhotosComponent,
+    UploadComponent
   ],
   imports: [
     CommonModule,

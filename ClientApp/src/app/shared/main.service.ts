@@ -13,7 +13,7 @@ import { IGetEventsResult } from './models/getEventsResult';
 export class MainService {
 
   private EVENT_URL = environment.apiUrl + 'events';
-  private TAG_URL = environment.apiUrl + 'tag';
+  private TAG_URL = environment.apiUrl + 'tags';
   private CACHE_SIZE = 1;
   private tagsCache$: Observable<ITag[]>;
 
@@ -31,7 +31,7 @@ export class MainService {
   }
 
   private requestTags() {
-    const url = `${this.TAG_URL}/allTags`;
+    const url = `${this.TAG_URL}`;
     return this.http.get<ITag[]>(url).pipe(
       map(res => {
         let tags: ITag[] = [];

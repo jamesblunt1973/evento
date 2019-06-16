@@ -14,24 +14,24 @@ namespace ServerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TagController : ControllerBase
+    public class TagsController : ControllerBase
     {
         private readonly ILogger logger;
         private readonly DataContext context;
-        public TagController(ILogger logger, DataContext context)
+        public TagsController(ILogger logger, DataContext context)
         {
             this.context = context;
             this.logger = logger;
         }
 
-        [HttpGet("allTags")]
+        [HttpGet]
         public async Task<IActionResult> GetTags()
         {
             var tags = await context.Tags.ToListAsync<Tag>();
             return Ok(tags);
         }
 
-        [HttpPost("newEvent")]
+        [HttpPost]
         public async Task<IActionResult> NewTag(Tag tag)
         {
             await context.Tags.AddAsync(tag);

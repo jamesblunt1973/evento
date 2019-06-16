@@ -1,0 +1,7 @@
+<div>
+  <span>Send new photos or videos</span>
+  <input #file type="file" multiple (change)="upload(file.files)" placeholder="Select Photos or Videos" />
+  <span class="progress" *ngIf="progress > 0 && progress < 100">
+      {{progress}}%
+  </span>
+</div>

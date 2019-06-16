@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import { IEvent } from './models/event.model';
@@ -46,4 +46,14 @@ export class EventsService {
     const url = `${this.BASE_URL}/${id}/photos`;
     return this.http.get<IPhoto[]>(url);
   }
+
+  upload(formData: FormData) {
+    const url = `${this.BASE_URL}/upload`;
+    const uploadReq = new HttpRequest('POST', url, formData, {
+      reportProgress: true,
+    });
+
+    return this.http.request(uploadReq);
+  }
+
 }
