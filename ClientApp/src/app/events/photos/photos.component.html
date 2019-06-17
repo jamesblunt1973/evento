@@ -1,5 +1,6 @@
-<div class="narrow-form">
+<div fxLayout="row wrap" fxLayoutAlign="center start">
   <div *ngFor="let photo of photos$ | async">
-    <img src="assets/files/events/{{photo.eventId}}/_{{photo.fileName}}" />
+    <app-photo [photo]="photo"></app-photo>
   </div>
+  <app-upload></app-upload>
 </div>

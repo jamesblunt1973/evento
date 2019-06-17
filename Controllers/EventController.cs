@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +25,13 @@ namespace ServerApi.Controllers
         private readonly ILogger logger;
         private readonly UserManager<User> userManager;
         private readonly DataContext context;
-        public EventsController(ILogger logger, UserManager<User> userManager, DataContext context)
+        private readonly IHostingEnvironment hostingEnvironment;
+        public EventsController(ILogger logger, UserManager<User> userManager, DataContext context, IHostingEnvironment hostingEnvironment)
         {
             this.context = context;
             this.userManager = userManager;
             this.logger = logger;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         // POST api/events
@@ -244,18 +249,18 @@ namespace ServerApi.Controllers
         }
 
         [HttpPost("upload"), DisableRequestSizeLimit]
-        public ActionResult Upload()
+        public IActionResult Upload()
         {
             var fileNames = new List<string>();
+            string folderName = "assets\\temp\\";
+            string webRootPath = hostingEnvironment.WebRootPath;
+            string newPath = Path.Combine(webRootPath, folderName);
+            if (!Directory.Exists(newPath))
+            {
+                Directory.CreateDirectory(newPath);
+            }
             foreach (var file in Request.Form.Files)
             {
-                string folderName = "assets\\temp\\";
-                string webRootPath = hostingEnvironment.WebRootPath;
-                string newPath = Path.Combine(webRootPath, folderName);
-                if (!Directory.Exists(newPath))
-                {
-                    Directory.CreateDirectory(newPath);
-                }
                 if (file.Length > 0)
                 {
                     var ext = Path.GetExtension(file.Name);
@@ -266,11 +271,11 @@ namespace ServerApi.Controllers
                     {
                         file.CopyTo(stream);
                         var img = Image.FromStream(stream);
-                        var w = 85;
+                        var w = 300;
                         var h = Convert.ToInt32(w * 1.0 / img.Width * img.Height);
                         if (h > w)
                         {
-                            h = 85;
+                            h = 300;
                             w = Convert.ToInt32(h * 1.0 / img.Height * img.Width);
                         }
                         var bmp = new Bitmap(img, w, h);
@@ -281,7 +286,7 @@ namespace ServerApi.Controllers
                     fileNames.Add(fileName);
                 }
             }
-            return Json(fileNames);
+            return Ok(fileNames);
         }
     }
 }

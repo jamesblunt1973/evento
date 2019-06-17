@@ -10,13 +10,15 @@ import { EventsService } from './events.service';
 import { ListComponent } from './list/list.component';
 import { PhotosComponent } from './photos/photos.component';
 import { UploadComponent } from './upload/upload.component';
+import { PhotoComponent } from './photo/photo.component';
 
 @NgModule({
   declarations: [
     NewEventComponent,
     ListComponent,
     PhotosComponent,
-    UploadComponent
+    UploadComponent,
+    PhotoComponent
   ],
   imports: [
     CommonModule,
