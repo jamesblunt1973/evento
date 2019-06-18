@@ -53,7 +53,15 @@ export class EventsService {
       reportProgress: true,
     });
 
-    return this.http.request(uploadReq);
+    return this.http.request<string[]>(uploadReq);
+  }
+
+  saveNewFiles(fileNames: string[], eventId: number) {
+    const url = `${this.BASE_URL}/newFiles`;
+    return this.http.post(url, {
+      files: fileNames,
+      id: eventId
+    });
   }
 
 }

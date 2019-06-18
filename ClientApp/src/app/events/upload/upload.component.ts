@@ -10,7 +10,7 @@ import { EventsService } from '../events.service';
 export class UploadComponent implements OnInit {
 
   progress: number;
-  @Output() public uploadComplete = new EventEmitter();
+  @Output() public uploadComplete = new EventEmitter<string[]>();
 
   constructor(private eventService: EventsService) { }
 

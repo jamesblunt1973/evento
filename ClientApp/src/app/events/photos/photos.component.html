@@ -2,5 +2,5 @@
   <div *ngFor="let photo of photos$ | async">
     <app-photo [photo]="photo"></app-photo>
   </div>
-  <app-upload></app-upload>
+  <app-upload (uploadComplete)="addNewFiles($event)"></app-upload>
 </div>

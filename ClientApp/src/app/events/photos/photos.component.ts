@@ -13,17 +13,23 @@ import { IPhoto } from '../models/photo.model';
 export class PhotosComponent implements OnInit {
 
   photos$: Observable<IPhoto[]>;
+  eventId: number;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
     private eventService: EventsService) { }
-  eventId: number;
+
+
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => { // ActivatedRoute subs don't require unsubscripbing
       this.eventId = +params.get('id'); // convert to number
       this.photos$ = this.eventService.getEventPhotos(this.eventId);
     });
+  }
+
+  addNewFiles(fileNames) {
+    this.eventService.saveNewFiles(fileNames);
   }
 
 }

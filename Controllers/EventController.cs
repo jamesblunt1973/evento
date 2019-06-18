@@ -195,32 +195,6 @@ namespace ServerApi.Controllers
                 e.EventTags.Add(new EventTag() { TagId = tagId });
             }
 
-            // move pictures
-            // string webRootPath = hostingEnvironment.WebRootPath;
-            // var itemPath = Path.Combine(webRootPath, "assets\\items\\" + item.Id + "\\");
-            // Directory.CreateDirectory(itemPath);
-            // var tempPath = Path.Combine(webRootPath, "assets\\temp\\");
-            // foreach (var img in data.Images)
-            // {
-            //     System.IO.File.Move(tempPath + img, itemPath + img);
-            //     System.IO.File.Move(tempPath + "_" + img, itemPath + "_" + img);
-            // }
-            // using (var stream = new FileStream(itemPath + data.Images[0], FileMode.Open))
-            // {
-            //     var img = Image.FromStream(stream);
-            //     var w = 300;
-            //     var h = Convert.ToInt32(w * 1.0 / img.Width * img.Height);
-            //     if (h > w)
-            //     {
-            //         h = 300;
-            //         w = Convert.ToInt32(h * 1.0 / img.Height * img.Width);
-            //     }
-            //     var bmp = new Bitmap(img, w, h);
-            //     bmp.Save(itemPath + "thumb.jpg", ImageFormat.Jpeg);
-            //     bmp.Dispose();
-            //     img.Dispose();
-            // }
-
             // TODO: Move to repository
             await context.Events.AddAsync(e);
             await context.SaveChangesAsync();
@@ -287,6 +261,20 @@ namespace ServerApi.Controllers
                 }
             }
             return Ok(fileNames);
+        }
+    
+        [HttpPost("newFiles")]
+        public async Task<IActionResult> EventNewFiles(NewFilesDto data) 
+        {
+            string webRootPath = hostingEnvironment.WebRootPath;
+            var itemPath = Path.Combine(webRootPath, "assets\\files\\events\\" + data.Id + "\\");
+            Directory.CreateDirectory(itemPath);
+            var tempPath = Path.Combine(webRootPath, "assets\\temp\\");
+            foreach (var file in data.Files)
+            {
+                System.IO.File.Move(tempPath + file, itemPath + file);
+                System.IO.File.Move(tempPath + "_" + file, itemPath + "_" + file);
+            }
         }
     }
 }
