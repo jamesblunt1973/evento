@@ -8,10 +8,11 @@
     </mat-form-field>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-icon-button>
+    <mat-checkbox [(ngModel)]="photo.visible">Visible</mat-checkbox>
+    <button mat-icon-button (click)="deletePhoto()">
       <mat-icon>delete</mat-icon>
     </button>
-    <button mat-icon-button>
+    <button mat-icon-button (click)="updatePhoto()">
       <mat-icon>save</mat-icon>
     </button>
   </mat-card-actions>

@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
 import { HttpEventType } from '@angular/common/http';
 import { EventsService } from '../events.service';
+import { IPhoto } from '../models/photo.model';
 
 @Component({
   selector: 'app-upload',
@@ -10,7 +11,8 @@ import { EventsService } from '../events.service';
 export class UploadComponent implements OnInit {
 
   progress: number;
-  @Output() public uploadComplete = new EventEmitter<string[]>();
+  @Output() uploadComplete = new EventEmitter<IPhoto[]>();
+  @Input() eventId: number;
 
   constructor(private eventService: EventsService) { }
 
@@ -25,13 +27,12 @@ export class UploadComponent implements OnInit {
     for (let file of files)
       formData.append(file.name, file);
 
-    this.eventService.upload(formData).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress)
-        this.progress = Math.round(100 * event.loaded / event.total);
-      else if (event.type === HttpEventType.Response) {
-        // for (var i in event.body)
-        //   this.images.push(event.body[i]);
-        this.uploadComplete.emit(event.body);
+    formData.append('id', this.eventId.toString());
+    this.eventService.upload(formData).subscribe(e => {
+      if (e.type === HttpEventType.UploadProgress)
+        this.progress = Math.round(100 * e.loaded / e.total);
+      else if (e.type === HttpEventType.Response) {
+        this.uploadComplete.emit(e.body);
       }
     });
   }

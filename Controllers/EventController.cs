@@ -150,7 +150,25 @@ namespace ServerApi.Controllers
             var list = await context.Photos.Where(a => a.EventId == id).OrderBy(a => a.Id).ToListAsync();
             return Ok(list);
         }
+        
+        // DELETE api/events/photos/5
+        [HttpDelete("photos/{id}")]
+        public async Task DeletePhoto(int id)
+        {
+            // TODO: Move to repository
+            var q = "DELETE FROM Photos WHERE Id = {0}";
+            await context.Database.ExecuteSqlCommandAsync(q, id);
+        }
 
+        [HttpPost("photos/{id}")]
+        public async Task UpdatePhoto(Photo photo)
+        {
+            var p = await context.Photos.SingleAsync(a => a.Id == photo.Id);
+            p.Description = photo.Description;
+            p.Visible = photo.Visible;
+            await context.SaveChangesAsync();
+        }
+        
         // POST api/events/new
         [HttpPost("new")]
         public async Task<IActionResult> NewEvent(EventDto data)
@@ -225,8 +243,9 @@ namespace ServerApi.Controllers
         [HttpPost("upload"), DisableRequestSizeLimit]
         public IActionResult Upload()
         {
-            var fileNames = new List<string>();
-            string folderName = "assets\\temp\\";
+            var result = new List<Photo>();
+            var eventId = Convert.ToInt32(Request.Form["id"]);
+            string folderName = $"assets\\files\\events\\{eventId}\\";
             string webRootPath = hostingEnvironment.WebRootPath;
             string newPath = Path.Combine(webRootPath, folderName);
             if (!Directory.Exists(newPath))
@@ -257,24 +276,21 @@ namespace ServerApi.Controllers
                         bmp.Dispose();
                         img.Dispose();
                     }
-                    fileNames.Add(fileName);
+
+                    // save file in database
+                    var photo = new Photo()
+                    {
+                        Description = "",
+                        EventId = eventId,
+                        FileName = fileName,
+                        Visible = true
+                    };
+                    context.Photos.Add(photo);
+                    result.Add(photo);
                 }
             }
-            return Ok(fileNames);
-        }
-    
-        [HttpPost("newFiles")]
-        public async Task<IActionResult> EventNewFiles(NewFilesDto data) 
-        {
-            string webRootPath = hostingEnvironment.WebRootPath;
-            var itemPath = Path.Combine(webRootPath, "assets\\files\\events\\" + data.Id + "\\");
-            Directory.CreateDirectory(itemPath);
-            var tempPath = Path.Combine(webRootPath, "assets\\temp\\");
-            foreach (var file in data.Files)
-            {
-                System.IO.File.Move(tempPath + file, itemPath + file);
-                System.IO.File.Move(tempPath + "_" + file, itemPath + "_" + file);
-            }
+            context.SaveChanges();
+            return Ok(result);
         }
     }
 }

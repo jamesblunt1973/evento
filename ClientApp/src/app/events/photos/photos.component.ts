@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
 import { EventsService } from '../events.service';
 import { IPhoto } from '../models/photo.model';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-photos',
@@ -28,8 +29,30 @@ export class PhotosComponent implements OnInit {
     });
   }
 
-  addNewFiles(fileNames) {
-    this.eventService.saveNewFiles(fileNames);
+  addNewFiles(newPhotos: IPhoto[]) {
+    this.photos$ = this.photos$.pipe(
+      map(photos => {
+        // let arr = photos.concat(newPhotos);
+        // return arr;
+        /*
+          the new photos magically append to existing photos array (00)
+        */
+        return photos;
+      })
+    );
+  }
+
+  deletePhoto(photo: IPhoto) {
+    this.photos$ = this.photos$.pipe(
+      map(photos => {
+        // let arr = photos.concat(newPhotos);
+        // return arr;
+        /*
+          the new photos magically append to existing photos array (00)
+        */
+        return photos;
+      })
+    );
   }
 
 }

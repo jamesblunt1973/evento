@@ -53,15 +53,16 @@ export class EventsService {
       reportProgress: true,
     });
 
-    return this.http.request<string[]>(uploadReq);
+    return this.http.request<IPhoto[]>(uploadReq);
   }
 
-  saveNewFiles(fileNames: string[], eventId: number) {
-    const url = `${this.BASE_URL}/newFiles`;
-    return this.http.post(url, {
-      files: fileNames,
-      id: eventId
-    });
+  deletePhoto(id: number) {
+    const url = `${this.BASE_URL}/photos/${id}`;
+    return this.http.delete<void>(url);
   }
 
+  updatePhoto(photo: IPhoto) {
+    const url = `${this.BASE_URL}/photos/${photo.id}`;
+    return this.http.post<void>(url, photo);
+  }
 }

@@ -1,6 +1,6 @@
 <div fxLayout="row wrap" fxLayoutAlign="center start">
   <div *ngFor="let photo of photos$ | async">
-    <app-photo [photo]="photo"></app-photo>
+    <app-photo [photo]="photo" (delete)="deletePhoto($event)" ></app-photo>
   </div>
-  <app-upload (uploadComplete)="addNewFiles($event)"></app-upload>
+  <app-upload [eventId]="eventId" (uploadComplete)="addNewFiles($event)"></app-upload>
 </div>

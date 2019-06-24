@@ -12,7 +12,7 @@ namespace ServerApi.Models.DomainModels
             EventId = 0;
             FileName = "";
             Description = "";
-            Visibile = false;
+            Visible = false;
         }
         public int Id { get; set; }
 
@@ -28,7 +28,7 @@ namespace ServerApi.Models.DomainModels
         public string Description { get; set; }
 
         [Required]
-        public bool Visibile { get; set; }
+        public bool Visible { get; set; }
 
         // Navigation Properties
         public Event Event { get; set; }
