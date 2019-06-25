@@ -1,4 +1,4 @@
-<div fxLayout="row wrap" fxLayoutAlign="center start">
+<div fxLayout="row wrap" fxLayoutAlign="center start" fxLayoutGap="10px grid">
   <div *ngFor="let photo of photos$ | async">
     <app-photo [photo]="photo" (delete)="deletePhoto($event)" ></app-photo>
   </div>

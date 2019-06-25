@@ -153,17 +153,18 @@ namespace ServerApi.Controllers
         
         // DELETE api/events/photos/5
         [HttpDelete("photos/{id}")]
-        public async Task DeletePhoto(int id)
+        public async Task<IActionResult> DeletePhoto(int id)
         {
             // TODO: Move to repository
             var q = "DELETE FROM Photos WHERE Id = {0}";
             await context.Database.ExecuteSqlCommandAsync(q, id);
+            return NoContent();
         }
 
-        [HttpPost("photos/{id}")]
-        public async Task UpdatePhoto(Photo photo)
+        [HttpPut("photos/{id}")]
+        public async Task UpdatePhoto(int id, Photo photo)
         {
-            var p = await context.Photos.SingleAsync(a => a.Id == photo.Id);
+            var p = await context.Photos.SingleAsync(a => a.Id == id);
             p.Description = photo.Description;
             p.Visible = photo.Visible;
             await context.SaveChangesAsync();

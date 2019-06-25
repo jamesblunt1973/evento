@@ -30,29 +30,11 @@ export class PhotosComponent implements OnInit {
   }
 
   addNewFiles(newPhotos: IPhoto[]) {
-    this.photos$ = this.photos$.pipe(
-      map(photos => {
-        // let arr = photos.concat(newPhotos);
-        // return arr;
-        /*
-          the new photos magically append to existing photos array (00)
-        */
-        return photos;
-      })
-    );
+    // add new photo to existing observable
   }
 
   deletePhoto(photo: IPhoto) {
-    this.photos$ = this.photos$.pipe(
-      map(photos => {
-        // let arr = photos.concat(newPhotos);
-        // return arr;
-        /*
-          the new photos magically append to existing photos array (00)
-        */
-        return photos;
-      })
-    );
+    // remove deleted photo from existing observable
   }
 
 }

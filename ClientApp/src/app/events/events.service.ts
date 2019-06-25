@@ -63,6 +63,6 @@ export class EventsService {
 
   updatePhoto(photo: IPhoto) {
     const url = `${this.BASE_URL}/photos/${photo.id}`;
-    return this.http.post<void>(url, photo);
+    return this.http.put<void>(url, photo);
   }
 }

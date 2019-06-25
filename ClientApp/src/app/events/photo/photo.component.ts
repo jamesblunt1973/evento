@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { IPhoto } from '../models/photo.model';
 import { EventsService } from '../events.service';
 
@@ -7,23 +8,33 @@ import { EventsService } from '../events.service';
   templateUrl: './photo.component.html',
   styleUrls: ['./photo.component.scss']
 })
-export class PhotoComponent implements OnInit {
+export class PhotoComponent implements OnInit, OnDestroy {
 
   @Input() photo: IPhoto;
   @Output() delete = new EventEmitter<IPhoto>();
+  private subscriptions: Array<Subscription> = [];
 
   constructor(private eventsService: EventsService) { }
 
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    for (const i in this.subscriptions) {
+      this.subscriptions[i].unsubscribe();
+    }
+  }
+
   deletePhoto() {
-    this.eventsService.deletePhoto(this.photo.id);
-    this.delete.emit(this.photo);
+    const sub = this.eventsService.deletePhoto(this.photo.id).subscribe(() => {
+      this.delete.emit(this.photo);
+    });
+    this.subscriptions.push(sub);
   }
 
   updatePhoto() {
-    this.eventsService.updatePhoto(this.photo);
+    const sub = this.eventsService.updatePhoto(this.photo).subscribe();
+    this.subscriptions.push(sub);
   }
 
 }
