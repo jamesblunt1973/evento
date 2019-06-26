@@ -1,5 +1,5 @@
 <mat-card>
-  <a [routerLink]="'/event/' + event.id">
+  <a [routerLink]="'/events/' + event.id">
     <div class="img" [style.backgroundImage]="'url(/assets/files/' + (event.photo ? ('events/' + event.id + '/_' + event.photo) : ('tags/' + tag.id + '.jpg')) + ')'"></div>
     <p>{{event.title}}</p>
     <p>{{event.holdingDate}}</p>

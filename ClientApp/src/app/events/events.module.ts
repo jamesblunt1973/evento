@@ -11,6 +11,7 @@ import { ListComponent } from './list/list.component';
 import { PhotosComponent } from './photos/photos.component';
 import { UploadComponent } from './upload/upload.component';
 import { PhotoComponent } from './photo/photo.component';
+import { EventComponent } from './event/event.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { PhotoComponent } from './photo/photo.component';
     ListComponent,
     PhotosComponent,
     UploadComponent,
-    PhotoComponent
+    PhotoComponent,
+    EventComponent
   ],
   imports: [
     CommonModule,
