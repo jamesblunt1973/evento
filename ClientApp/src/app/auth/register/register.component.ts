@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.drawerContent = document.getElementsByTagName('mat-drawer-container').item(0);
-    this.drawerContent.style.backgroundImage = 'url(\'../../../assets/images/login-bg.jpg\')';
+    this.drawerContent.style.backgroundImage = 'url(\'/assets/images/login-bg.jpg\')';
 
     let sub = this.store.pipe(select(fromReducer.getAuthErrorMessage)).subscribe(msg => {
       if (msg != '') {

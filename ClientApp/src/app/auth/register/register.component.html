@@ -17,13 +17,13 @@
       </mat-radio-group>
       <mat-form-field>
         <input type="text" matInput placeholder="User Name" formControlName="userName" />
-        <img *ngIf="userNameAsyncLoader" matSuffix src="../../../assets/images/waiting.gif" />
+        <img *ngIf="userNameAsyncLoader" matSuffix src="/assets/images/waiting.gif" />
         <mat-error *ngIf="userName.errors?.required">UserName is required</mat-error>
         <mat-error *ngIf="userName.errors?.uniqueUserName">UserName is not unique</mat-error>
       </mat-form-field>
       <mat-form-field>
         <input type="email" matInput placeholder="Email" formControlName="email" />
-        <img *ngIf="emailAsyncLoader" matSuffix src="../../../assets/images/waiting.gif" />
+        <img *ngIf="emailAsyncLoader" matSuffix src="/assets/images/waiting.gif" />
         <mat-error *ngIf="email.errors?.required">Email is required</mat-error>
         <mat-error *ngIf="email.errors?.email">Email in not valid</mat-error>
         <mat-error *ngIf="email.errors?.uniqueEmail">Email is not unique</mat-error>

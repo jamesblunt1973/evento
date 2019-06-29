@@ -6,9 +6,9 @@ import { PhotosComponent } from './photos/photos.component';
 import { EventComponent } from './event/event.component';
 
 const routes: Routes = [
-  { path: '', component: ListComponent },
-  { path: ':id', component: EventComponent },
+  { path: '', component: ListComponent, pathMatch: 'full' },
   { path: 'new', component: NewEventComponent },
+  { path: ':id', component: EventComponent },
   { path: 'photos/:id', component: PhotosComponent }
 ];
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { shareReplay, map } from 'rxjs/operators';
+import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { shareReplay, map, retry } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { ITag } from './models/tag.model';
 import { IGetEventsParameter } from './models/getEventsParameter';
@@ -47,6 +47,10 @@ export class MainService {
   getEvents(data: IGetEventsParameter) {
     const url = `${this.EVENT_URL}`;
     return this.http.post<IGetEventsResult>(url, data);
+  }
+
+  checkImageExist(url: string) {
+    return this.http.get(url, { responseType: 'blob' });
   }
 
   navigatorGeolocationError(error: PositionError) {

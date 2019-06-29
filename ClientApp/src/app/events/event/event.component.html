@@ -1,3 +1,23 @@
-<h1>
-  {{eventId}}
-</h1>
+<div class="narrow-form">
+  <mat-card>
+    <mat-card-header>
+      <img mat-card-avatar [src]="headerImg" />
+      <mat-card-title>
+        <b>{{event.title}}</b>
+        <span class="small-text">
+          <a [routerLink]="['/']" [queryParams]="{userId: event.owner.id}" title="see all events of this user">
+            {{event.owner.name}}
+          </a>
+        </span>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <span class="small-text">
+          {{ event.holdingDate | date:'EEEE, MMMM d, y, h:mm a' }}
+        </span>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      {{event | json}}
+    </mat-card-content>
+  </mat-card>
+</div>

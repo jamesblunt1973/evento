@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { shareReplay, map, share, catchError } from 'rxjs/operators';
 import { IEvent, AppEvent } from './models/event.model';
 import { environment } from '../../environments/environment';
@@ -13,8 +13,8 @@ export class EventsService {
   private BASE_URL = environment.apiUrl + 'events';
   private CACHE_SIZE = 1;
   private userEventsCache$: Observable<IEventSummury[]>;
-  private observableCache: { [key: number]: Observable<IEvent> } = {};
-  private eventsCache: { [key: number]: IEvent } = {};
+  private observableCache: { [key: number]: Observable<AppEvent> } = {};
+  private eventsCache: { [key: number]: AppEvent } = {};
 
 
   constructor(private http: HttpClient) { }
@@ -23,11 +23,6 @@ export class EventsService {
     const url = `${this.BASE_URL}/new`;
     return this.http.post<number>(url, event);
   }
-
-  // getEvent(id: number) {
-  //   const url = `${this.BASE_URL}/${id}`;
-  //   return this.http.get<IEvent>(url);
-  // }
 
   getUserEvents() { // get events for authenticated user
     // chache events with shareReplay operator
@@ -69,27 +64,32 @@ export class EventsService {
     return this.http.put<void>(url, photo);
   }
 
-  getEvent(id: number) {
+  getEvent(id: number, edit = false) {
     // Data available
-    if (this.eventsCache[id]) return of(this.eventsCache[id]);
+    if (this.eventsCache[id])
+      return of(this.eventsCache[id]);
     // Request pending
-    else if (this.observableCache[id]) return this.observableCache[id];
+    else if (this.observableCache[id])
+      return this.observableCache[id];
     // New request needed
-    else this.observableCache[id] = this.fetchEvent(id);
+    else
+      this.observableCache[id] = this.fetchEvent(id, edit);
 
     return this.observableCache[id];
   }
 
-  private fetchEvent(id: number) {
-    const url = `${this.BASE_URL}/${id}`;
-    return this.http.get<IEvent>(url).pipe(
+  private fetchEvent(id: number, edit: boolean) {
+    let url = `${this.BASE_URL}/${id}`;
+    if (edit)
+      url += '?edit=true';
+    return this.http.get<AppEvent>(url).pipe(
       map(res => this.mapCachedEvent(res)),
       catchError(EventsService.handleError),
       share()
     );
   }
 
-  private mapCachedEvent(body: IEvent) {
+  private mapCachedEvent(body: AppEvent) {
     this.observableCache[body.id] = null;
     this.eventsCache[body.id] = body;
     return this.eventsCache[body.id];
@@ -104,7 +104,6 @@ export class EventsService {
   static handleError(error: any) {
     const _errMsg = (error.message) ? error.message :
       error.status ? `${error.status} - ${error.statusText}` : 'Server error';
-    console.error(_errMsg);
-    return Observable.throw(_errMsg);
+    return throwError(_errMsg);
   }
 }

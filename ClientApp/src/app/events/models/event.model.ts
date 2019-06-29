@@ -1,3 +1,7 @@
+import { IUser } from '../../shared/models/user.model';
+import { IPhoto } from './photo.model';
+import { INews } from './news.model';
+
 export interface IEvent {
   id: number;
   userId: string;
@@ -28,4 +32,17 @@ export class AppEvent implements IEvent {
     public link: string = '',
     public tags: number[] = []
   ) { }
+
+  owner: IUser;
+  rate: number;
+  votes: number;
+  photos: Array<IPhoto>;
+  visitCount: number;
+  joined: number;
+  favorite: number;
+  followed: number;
+  news: Array<INews>;
+  userJoined: boolean;
+  userFollowed: boolean;
+  userFavorite: boolean;
 }

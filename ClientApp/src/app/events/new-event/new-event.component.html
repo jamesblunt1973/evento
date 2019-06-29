@@ -54,7 +54,7 @@
       <mat-selection-list required [(ngModel)]="model.tags" name="tags">
         <div *ngFor="let tag of tags$ | async">
           <mat-list-option *ngIf="tag" [value]="tag.id">
-            <img matListAvatar src="../../../assets/files/tags/{{tag.id}}.jpg" alt="{{tag.title}}" />
+            <img matListAvatar src="/assets/files/tags/{{tag.id}}.jpg" alt="{{tag.title}}" />
             {{tag.title}}
           </mat-list-option>
         </div>

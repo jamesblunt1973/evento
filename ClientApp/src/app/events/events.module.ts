@@ -12,6 +12,7 @@ import { PhotosComponent } from './photos/photos.component';
 import { UploadComponent } from './upload/upload.component';
 import { PhotoComponent } from './photo/photo.component';
 import { EventComponent } from './event/event.component';
+import { RatingComponent } from './rating/rating.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { EventComponent } from './event/event.component';
     PhotosComponent,
     UploadComponent,
     PhotoComponent,
-    EventComponent
+    EventComponent,
+    RatingComponent
   ],
   imports: [
     CommonModule,

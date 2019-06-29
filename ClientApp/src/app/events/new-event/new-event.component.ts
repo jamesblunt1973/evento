@@ -63,7 +63,7 @@ export class NewEventComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe((params: ParamMap) => { // ActivatedRoute subs don't require unsubscripbing
       if (params.has('id')) {
         let eventId = +params.get('id'); // convert to number
-        let sub = this.eventService.getEvent(eventId).subscribe(event => {
+        let sub = this.eventService.getEvent(eventId, true).subscribe(event => {
           this.model = event;
           this.center = latLng(event.latitude, event.longitude);
           this.addMarker(this.center);
@@ -113,25 +113,12 @@ export class NewEventComponent implements OnInit, OnDestroy {
   }
 
   newEvent() {
-    ///* in order to add selected time to holding date,
-    //   we split the time string and convert it to 
-    //   corresponding millisecond, then by using setTime
-    //   method, we can obtain the correct date and time.
-    //   the given time is something like "08:47 am" */
-    //if (this.time != '') {
-    //  var time = this.model.holdingDate.getTime();
-    //  var items = this.time.split(':');
-    //  var hour = parseInt(items[0]);
-    //  items = items[1].split(' ');
-    //  var min = parseInt(items[0]);
-
-    //  time += (hour * 3600 + min * 60) * 1000;
-    //  this.model.holdingDate.setTime(time);
-    //}
     this.model.userId = this.user.id;
     this.eventService.newEvent(this.model).subscribe(id => {
       this.model = new AppEvent();
-      this.snackBar.open(`Your new event saved successfully {${id}}, please wait for confirmation by moderator.`, 'close');
+      this.snackBar.open(`Your new event saved successfully {${id}}, please wait for confirmation by moderator.`, 'close', {
+        duration: 2000,
+      });
       this.router.navigateByUrl('/');
     }, error => {
       console.error(error);

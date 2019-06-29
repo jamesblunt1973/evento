@@ -14,7 +14,7 @@
     <button mat-icon-button (click)="userBtnClick()">
         <mat-icon>more_vert</mat-icon>
     </button>
-    <img class="user-icon" src="../../../assets/images/login-icon.svg" />    
+    <img class="user-icon" src="/assets/images/login-icon.svg" />    
     <div *ngIf="user$ | async as user">{{user.name}}</div>
   </div>
 </mat-toolbar>

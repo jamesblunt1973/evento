@@ -22,15 +22,15 @@ namespace ServerApi.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
-        private readonly ILogger logger;
-        private readonly UserManager<User> userManager;
+        //private readonly ILogger logger;
+        //private readonly UserManager<User> userManager;
         private readonly DataContext context;
         private readonly IHostingEnvironment hostingEnvironment;
-        public EventsController(ILogger logger, UserManager<User> userManager, DataContext context, IHostingEnvironment hostingEnvironment)
+        public EventsController(/*ILogger logger, UserManager<User> userManager, */DataContext context, IHostingEnvironment hostingEnvironment)
         {
             this.context = context;
-            this.userManager = userManager;
-            this.logger = logger;
+            //this.userManager = userManager;
+            //this.logger = logger;
             this.hostingEnvironment = hostingEnvironment;
         }
 
@@ -115,31 +115,76 @@ namespace ServerApi.Controllers
 
         // GET api/events/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEvent(int id)
+        public async Task<IActionResult> GetEvent(int id, [FromQuery]bool edit = false)
         {
-            // authentication
-            if (!User.Identity.IsAuthenticated)
+            string userId = "";
+            if (User.Identity.IsAuthenticated)
+                userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (edit && string.IsNullOrEmpty(userId))
                 return BadRequest("User not found!");
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var e = await context.Events
+                .Include("User")
                 .Include("EventTags")
+                .Include("News")
+                .Include("Photos")
+                .Include("Activities")
                 .SingleOrDefaultAsync(a => a.Id == id);
-            if (e.UserId != userId)
+
+            if (edit && e.UserId != userId)
                 return Unauthorized($"Event with id {id} is not yours to edit.");
-            var res = new EventDto();
-            // use auto mapper
-            res.Id = e.Id;
-            res.Capacity = e.Capacity;
-            res.Description = e.Description;
-            res.Duration = e.Duration;
-            res.HoldingDate = e.HoldingDate.Date;
-            res.Latitude = e.Latitude;
-            res.Link = e.Link;
-            res.Longitude = e.Longitude;
-            res.Tags = e.EventTags.Select(a => a.TagId).ToArray();
-            res.Time = e.HoldingDate.ToString("hh:mm tt");
-            res.Title = e.Title;
-            res.UserId = e.UserId;
+
+            var res = new EventDto
+            {
+                // use auto mapper
+                Id = e.Id,
+                Capacity = e.Capacity,
+                Description = e.Description,
+                Duration = e.Duration,
+                HoldingDate = e.HoldingDate,
+                Latitude = e.Latitude,
+                Link = e.Link,
+                Longitude = e.Longitude,
+                Tags = e.EventTags.Select(a => a.TagId).ToArray(),
+                Time = e.HoldingDate.ToString("hh:mm tt"),
+                Title = e.Title,
+                UserId = e.UserId
+            };
+
+            if (!edit)
+            {
+                // add extra properties
+                res.Owner = new User { Id = e.User.Id, Name = e.User.Name };
+                res.Rate = e.Rate;
+                res.Votes = e.Votes;
+                res.Photos = e.Photos.Where(a => a.Visible).Select(a => new Photo()
+                {
+                    Description = a.Description,
+                    Id = a.Id,
+                    FileName = a.FileName
+                }).ToList();
+                res.VisitCount = e.VisitCount;
+                res.Joined = e.Activities.Count(a => a.Joined);
+                res.Favorite = e.Activities.Count(a => a.Favorite);
+                res.Followed = e.Activities.Count(a => a.Follow);
+                res.News = e.News.Select(a => new News()
+                {
+                    Id = a.Id,
+                    Context = a.Context,
+                    Title = a.Title,
+                    SubmitDate = a.SubmitDate
+                }).ToList();
+
+                res.UserJoined = e.Activities.Any(a => a.UserId == userId && a.Joined);
+                res.UserFavorite = e.Activities.Any(a => a.UserId == userId && a.Favorite);
+                res.UserFollowed = e.Activities.Any(a => a.UserId == userId && a.Follow);
+
+                // Increment visit count for this event
+                // TODO: Move to repository
+                var q = "UPDATE Events SET VisitCount = VisitCount + 1 WHERE Id = {0}";
+                await context.Database.ExecuteSqlCommandAsync(q, id);
+            }
+
             return Ok(res);
         }
 

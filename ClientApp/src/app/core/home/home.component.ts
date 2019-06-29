@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.drawerContent = document.getElementsByTagName('mat-drawer-container').item(0);
-    this.drawerContent.style.backgroundImage = 'url(\'../../../assets/images/main-bg.jpg\')';
+    this.drawerContent.style.backgroundImage = 'url(\'/assets/images/main-bg.jpg\')';
 
     let sub = this.mainService.getTags().subscribe(tags => {
       this.tags = tags;

@@ -1,7 +1,7 @@
 <div class="narrow-form">
   <mat-nav-list>
     <mat-list-item *ngFor="let event of events$ | async">
-      <img matListAvatar src="../../../assets/files/events/{{event.id}}/_{{event.photo}}" alt="{{event.title}}" />
+      <img matListAvatar src="/assets/files/events/{{event.id}}/_{{event.photo}}" alt="{{event.title}}" />
       <a matLine routerLink="/event/{{event.id}}">{{event.title}}</a>
       <button routerLink="/events/photos/{{event.id}}" mat-icon-button title="Add photo or video">
         <mat-icon>photo</mat-icon>
