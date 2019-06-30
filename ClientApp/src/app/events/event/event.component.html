@@ -19,12 +19,7 @@
     </mat-card-header>
     <mat-card-content>
       <img class="img" [src]="'/assets/files/events/' + event.id + '/_' + currentPhoto" />
-      <div fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutGap="5px">
-        <img class="thumbnail" 
-          *ngFor="let photo of event.photos" 
-          [src]="'/assets/files/events/' + event.id + '/_' + photo.fileName" 
-          (click)="currentPhoto = photo.fileName" />
-      </div>
+      <app-carousel [images]="event.photos" [eventId]="event.id" (select)="currentPhoto = $event.fileName"></app-carousel>
     </mat-card-content>
   </mat-card>
 </div>

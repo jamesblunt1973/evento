@@ -1,0 +1,24 @@
+<div class="carousel-container">
+
+  <div ng2-carouselamos
+       class="slides-wrapper"
+       [items]="images"
+       [$prev]="prev"
+       [$next]="next"
+       [$item]="item">
+  </div>
+
+  <ng-template #prev>
+    <mat-icon>chevron_left</mat-icon>
+  </ng-template>
+  <ng-template #next>
+    <mat-icon>chevron_right</mat-icon>
+  </ng-template>
+  <ng-template #item let-item let-i="index">
+
+    <div class="slide-items" (click)="selectPhoto(item)">
+      <img [src]="'/assets/files/events/' + eventId + '/_' + item.fileName">
+    </div>
+
+  </ng-template>
+</div>
