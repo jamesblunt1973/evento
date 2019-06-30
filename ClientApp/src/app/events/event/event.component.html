@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-header>
       <img mat-card-avatar [src]="headerImg" />
-      <mat-card-title>
+      <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
         <b>{{event.title}}</b>
         <span class="small-text">
           <a [routerLink]="['/']" [queryParams]="{userId: event.owner.id}" title="see all events of this user">
@@ -10,14 +10,21 @@
           </a>
         </span>
       </mat-card-title>
-      <mat-card-subtitle>
+      <mat-card-subtitle fxLayout="row" fxLayoutAlign="space-between center">
         <span class="small-text">
           {{ event.holdingDate | date:'EEEE, MMMM d, y, h:mm a' }}
         </span>
+        <app-rating [rating]="event.rate" [votes]="event.votes"></app-rating>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      {{event | json}}
+      <img class="img" [src]="'/assets/files/events/' + event.id + '/_' + currentPhoto" />
+      <div fxLayout="row wrap" fxLayoutAlign="space-between" fxLayoutGap="5px">
+        <img class="thumbnail" 
+          *ngFor="let photo of event.photos" 
+          [src]="'/assets/files/events/' + event.id + '/_' + photo.fileName" 
+          (click)="currentPhoto = photo.fileName" />
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

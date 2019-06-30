@@ -7,12 +7,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class RatingComponent {
   @Input() rating: number;
+  @Input() votes: number;
   @Output() ratingClick = new EventEmitter<number>();
-
-  inputName: string;
 
   onClick(rating: number): void {
     this.rating = rating;
+    this.votes += 1;
     this.ratingClick.emit(rating);
   }
 }

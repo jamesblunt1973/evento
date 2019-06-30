@@ -15,6 +15,7 @@ export class EventComponent implements OnInit {
   eventId: number;
   event = new AppEvent();
   headerImg = '/assets/images/login-icon.svg';
+  currentPhoto = '';
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -30,10 +31,12 @@ export class EventComponent implements OnInit {
 
         let userImageSrc = `/assets/files/users/${this.event.owner.id}.jpg`;
         this.mainService.checkImageExist(userImageSrc).subscribe(res => {
-            this.headerImg = userImageSrc;
-        }, error => {
-            console.log(error);
+          this.headerImg = userImageSrc;
         });
+
+        if (this.event.photos.length > 0)
+          this.currentPhoto = this.event.photos[0].fileName;
+
       });
     });
   }
