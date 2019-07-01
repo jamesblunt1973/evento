@@ -55,9 +55,10 @@ export class NewEventComponent implements OnInit, OnDestroy {
 
     this.tags$ = this.mainService.getTags();
 
-    this.store.pipe(select(getAuthUser)).subscribe(user => {
+    let sub = this.store.pipe(select(getAuthUser)).subscribe(user => {
       this.user = user;
     });
+    this.subscriptions.push(sub);
 
     // if id parameter is provided then we edit the specified event
     this.route.paramMap.subscribe((params: ParamMap) => { // ActivatedRoute subs don't require unsubscripbing

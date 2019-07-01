@@ -1,23 +1,18 @@
 <div class="carousel-container">
 
-  <div ng2-carouselamos
-       class="slides-wrapper"
-       [items]="images"
-       [$prev]="prev"
-       [$next]="next"
-       [$item]="item">
+  <div ng2-carouselamos class="slides-wrapper" [items]="images" [$prev]="prev" [$next]="next" [$item]="item">
   </div>
 
   <ng-template #prev>
     <button mat-icon-button>
-        <mat-icon color="accent">chevron_left</mat-icon>
+      <mat-icon color="accent">chevron_left</mat-icon>
     </button>
   </ng-template>
   <ng-template #next>
-      <button mat-icon-button>
-          <mat-icon color="accent">chevron_right</mat-icon>
-      </button>
-    </ng-template>
+    <button mat-icon-button>
+      <mat-icon color="accent">chevron_right</mat-icon>
+    </button>
+  </ng-template>
   <ng-template #item let-item let-i="index">
     <div class="slide-items" (click)="selectPhoto(item)">
       <img [src]="'/assets/files/events/' + eventId + '/_' + item.fileName" />

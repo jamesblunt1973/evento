@@ -23,6 +23,34 @@
         <p class="desc" *ngIf="currentPhoto.description">{{currentPhoto.description}}</p>
       </div>
       <app-carousel [images]="event.photos" [eventId]="event.id" (select)="currentPhoto = $event"></app-carousel>
+      <div fxLayout="row wrap">
+        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center">
+          <button mat-icon-button>
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <p>{{event.visitCount + 1}} visited so far</p>
+        </div>
+        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center">
+          <button [disabled]="user ? null : true" mat-icon-button (click)="event.userFavorite = !event.userFavorite">
+            <mat-icon [color]="event.userFavorite ? 'warn' : ''">favorite</mat-icon>
+          </button>
+          <p>{{event.favorite}} added to favorite</p>
+        </div>
+        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center">
+          <button [disabled]="user ? null : true" mat-icon-button (click)="event.userJoined = !event.userJoined">
+            <mat-icon [color]="event.userJoined ? 'warn' : ''">person</mat-icon>
+          </button>
+          <p>{{event.joined}} joined this event</p>
+        </div>
+        <div fxFlex="50%" fxLayout="row" fxLayoutAlign="start center">
+          <button [disabled]="user ? null : true" mat-icon-button (click)="event.userFollowed = !event.userFollowed">
+            <mat-icon [color]="event.userFollowed ? 'warn' : ''">thumb_up</mat-icon>
+          </button>
+          <p>{{event.followed}} followed news</p>
+        </div>
+      </div>
+      <p class="mat-small">* click on each item to add/remove yourself. <b>Login required</b></p>
+      <p *ngIf="event.description">{{event.description}}</p>
     </mat-card-content>
   </mat-card>
 </div>
