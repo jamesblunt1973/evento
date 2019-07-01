@@ -9,16 +9,18 @@
   </div>
 
   <ng-template #prev>
-    <mat-icon>chevron_left</mat-icon>
+    <button mat-icon-button>
+        <mat-icon color="accent">chevron_left</mat-icon>
+    </button>
   </ng-template>
   <ng-template #next>
-    <mat-icon>chevron_right</mat-icon>
-  </ng-template>
+      <button mat-icon-button>
+          <mat-icon color="accent">chevron_right</mat-icon>
+      </button>
+    </ng-template>
   <ng-template #item let-item let-i="index">
-
     <div class="slide-items" (click)="selectPhoto(item)">
-      <img [src]="'/assets/files/events/' + eventId + '/_' + item.fileName">
+      <img [src]="'/assets/files/events/' + eventId + '/_' + item.fileName" />
     </div>
-
   </ng-template>
 </div>

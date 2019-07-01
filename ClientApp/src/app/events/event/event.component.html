@@ -18,8 +18,11 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <img class="img" [src]="'/assets/files/events/' + event.id + '/_' + currentPhoto" />
-      <app-carousel [images]="event.photos" [eventId]="event.id" (select)="currentPhoto = $event.fileName"></app-carousel>
+      <div class="photo">
+        <img class="img" [src]="'/assets/files/events/' + event.id + '/_' + currentPhoto.fileName" />
+        <p class="desc" *ngIf="currentPhoto.description">{{currentPhoto.description}}</p>
+      </div>
+      <app-carousel [images]="event.photos" [eventId]="event.id" (select)="currentPhoto = $event"></app-carousel>
     </mat-card-content>
   </mat-card>
 </div>

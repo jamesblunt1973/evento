@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material';
 import { EventsService } from '../events.service';
 import { AppEvent } from '../models/event.model';
 import { MainService } from '../../shared/main.service';
+import { IPhoto } from '../models/photo.model';
 
 @Component({
   selector: 'app-event',
@@ -15,7 +16,7 @@ export class EventComponent implements OnInit {
   eventId: number;
   event = new AppEvent();
   headerImg = '/assets/images/login-icon.svg';
-  currentPhoto = '';
+  currentPhoto: IPhoto;
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -35,7 +36,7 @@ export class EventComponent implements OnInit {
         });
 
         if (this.event.photos.length > 0)
-          this.currentPhoto = this.event.photos[0].fileName;
+          this.currentPhoto = this.event.photos[0];
 
       });
     });
