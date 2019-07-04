@@ -6,6 +6,7 @@ import { IEvent, AppEvent } from './models/event.model';
 import { environment } from '../../environments/environment';
 import { IEventSummury } from '../shared/models/eventSummury';
 import { IPhoto } from './models/photo.model';
+import { INews } from './models/news.model';
 
 @Injectable()
 export class EventsService {
@@ -76,6 +77,11 @@ export class EventsService {
       this.observableCache[id] = this.fetchEvent(id, edit);
 
     return this.observableCache[id];
+  }
+
+  postNews(news: INews) {
+    const url = `${this.BASE_URL}/news`;
+    return this.http.post<number>(url, news);
   }
 
   private fetchEvent(id: number, edit: boolean) {

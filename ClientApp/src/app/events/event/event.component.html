@@ -51,6 +51,23 @@
       </div>
       <p class="mat-small">* click on each item to add/remove yourself. <b>Login required</b></p>
       <p *ngIf="event.description">{{event.description}}</p>
+      <p *ngFor="let news of event.news">
+        <span>{{news.submitDate | date:'MMMM d, h:mm a'}}</span>
+        {{news.context}}
+      </p>
+      <div *ngIf="event.userId == user.id">
+        <mat-form-field style="width: 100%;">
+          <textarea matInput placeholder="News Text" #ctx rows="3"></textarea>
+        </mat-form-field>
+        <button mat-button (click)="postNews(ctx.value)">Post News</button>
+      </div>
+      <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" [(leafletCenter)]="eventLocation"></div>
+      <div class="tags-panel">
+        <div *ngFor="let tagId of event.tags">
+          <img matListAvatar src="/assets/files/tags/{{tags[tagId].id}}.jpg" alt="{{tags[tagId].title}}" />
+          <span>{{tags[tagId].title}}</span>
+        </div>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>
