@@ -32,7 +32,16 @@ mat-card {
 }
 
 .map {
-  height: 480px;
+  height: 360px;
   width: 100%;
   margin: 0 auto;
+}
+
+.tags-panel {
+  .icon {
+    width: 48px;
+    height: 48px;
+    background-size: contain;
+    border-radius: 50%;
+  }
 }

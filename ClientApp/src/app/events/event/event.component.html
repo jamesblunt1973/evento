@@ -1,5 +1,6 @@
 <div class="narrow-form">
-  <mat-card>
+  <mat-spinner *ngIf="loading" color="accent"></mat-spinner>
+  <mat-card *ngIf="!loading">
     <mat-card-header>
       <img mat-card-avatar [src]="headerImg" />
       <mat-card-title fxLayout="row" fxLayoutAlign="space-between center">
@@ -62,9 +63,9 @@
         <button mat-button (click)="postNews(ctx.value)">Post News</button>
       </div>
       <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" [(leafletCenter)]="eventLocation"></div>
-      <div class="tags-panel">
-        <div *ngFor="let tagId of event.tags">
-          <img matListAvatar src="/assets/files/tags/{{tags[tagId].id}}.jpg" alt="{{tags[tagId].title}}" />
+      <div class="tags-panel" fxLayout="row" fxLayoutAlign="start">
+        <div fxLayout="column" fxLayoutAlign="start center" *ngFor="let tagId of event.tags">
+          <div class="icon" [style.backgroundImage]="'url(/assets/files/tags/' + tags[tagId].id + '.jpg)'"></div>
           <span>{{tags[tagId].title}}</span>
         </div>
       </div>

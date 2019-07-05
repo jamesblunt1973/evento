@@ -12,7 +12,9 @@ import {
   MatRadioModule,
   MatDatepickerModule,
   MatNativeDateModule, 
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatProgressSpinnerModule,
+  MatSelectModule
 } from '@angular/material';
 
 @NgModule({
@@ -29,7 +31,9 @@ import {
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule, 
-    MatCheckboxModule],
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatSelectModule],
   imports: [
     MatButtonModule,
     MatIconModule,
@@ -43,6 +47,8 @@ import {
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule, 
-    MatCheckboxModule],
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatSelectModule],
 })
 export class MaterialComponentsModule { }

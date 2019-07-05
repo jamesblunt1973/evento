@@ -7,6 +7,9 @@ import { AppState } from '../../app.state';
 import { IUser } from '../../shared/models/user.model';
 import { getAuthUser } from '../../shared/state/auth.reducer';
 import { Logout } from '../../shared/state/auth.actions';
+import { FilterData } from '../filter.model';
+import { MainService } from '../../shared/main.service';
+import { ITag } from '../../shared/models/tag.model';
 
 @Component({
   selector: 'app-layout',
@@ -19,8 +22,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
   sidebarStatus: boolean;
   rightbarStatus: boolean;
   user$: Observable<IUser>;
+  model = new FilterData();
+  tags: Array<ITag> = [];
 
-  constructor(private store: Store<AppState>) { }
+  constructor(
+    private store: Store<AppState>,
+    private mainService: MainService
+    ) { }
 
   ngOnInit() {
     let sub = this.store.pipe(select(getSidebarStatus)).subscribe(status => {
@@ -34,6 +42,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sub);
     
     this.user$ = this.store.pipe(select(getAuthUser));
+
+    sub = this.mainService.getTags().subscribe(tags => {
+      this.tags = tags
+    });
+    this.subscriptions.push(sub);
   }
 
   ngOnDestroy() {

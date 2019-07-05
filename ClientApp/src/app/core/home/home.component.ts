@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   tags: ITag[];
   totalCount: number;
   private subscriptions: Array<Subscription> = [];
+  loading = true;
 
   constructor(private mainService: MainService) { }
 
@@ -54,6 +55,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     let sub = this.mainService.getEvents(this.filter).subscribe(res => {
       this.totalCount = res.totalCount;
       this.events = res.events;
+      this.loading = false;
     });
     this.subscriptions.push(sub);
   }

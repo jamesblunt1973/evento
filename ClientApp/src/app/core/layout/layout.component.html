@@ -5,22 +5,38 @@
   <main fxLayout="column" fxFlex="1">
     <mat-drawer-container fxFlex="1" (backdropClick)="onSidebarClosing()">
       <mat-drawer mode="over" [opened]="sidebarStatus" position="start">
-
-          filter items<br />
-          from:
-          <br />
-          to:
-          <br />
-          str:
-          <br />
-          tags:
-          <br />
-          page:
-          <br />
-          count: 20
-          <br />
-          sort:
-
+        <div class="filter-container">
+          <form #filterDataForm="ngForm" fxLayout="column">
+            <mat-form-field>
+              <input [matDatepicker]="datePickerFrom" matInput name="from" required [(ngModel)]="model.from"
+                (click)="datePickerFrom.open()" placeholder="Pick date from">
+              <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #datePickerFrom></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <input [matDatepicker]="datePickerTo" matInput name="to" required [(ngModel)]="model.to"
+                (click)="datePickerTo.open()" placeholder="Pick date to">
+              <mat-datepicker-toggle matSuffix [for]="datePickerTo"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #datePickerTo></mat-datepicker>
+            </mat-form-field>
+            <mat-selection-list required [(ngModel)]="model.tags" name="tags">
+              <div *ngFor="let tag of tags">
+                <mat-list-option *ngIf="tag" [value]="tag.id">
+                  <img matListAvatar src="/assets/files/tags/{{tag.id}}.jpg" alt="{{tag.title}}" />
+                  {{tag.title}}
+                </mat-list-option>
+              </div>
+            </mat-selection-list>
+            <mat-form-field>
+              <mat-label>Sort</mat-label>
+              <mat-select [(ngModel)]="model.sort" name="sort">
+                <mat-option value="0">Latest</mat-option>
+                <mat-option value="1">Popular</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button type="submit" mat-raised-button color="primary">Filter Events</button>
+          </form>
+        </div>
       </mat-drawer>
       <mat-drawer mode="over" [opened]="rightbarStatus" position="end">
         <mat-nav-list>

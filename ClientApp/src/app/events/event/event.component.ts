@@ -19,7 +19,7 @@ import { INews } from '../models/news.model';
   styleUrls: ['./event.component.scss']
 })
 export class EventComponent implements OnInit, OnDestroy {
-
+  loading = true;
   user: IUser;
   eventId: number;
   event = new AppEvent();
@@ -58,6 +58,7 @@ export class EventComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.eventId = +params.get('id'); // convert to number
       this.eventService.getEvent(this.eventId).subscribe(res => {
+        this.loading = false;
         this.event = res;
 
         let userImageSrc = `/assets/files/users/${this.event.owner.id}.jpg`;
