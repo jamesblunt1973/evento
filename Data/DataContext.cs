@@ -1,3 +1,4 @@
+using System;
 using ServerApi.Models.DomainModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,12 @@ namespace ServerApi.Data
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Log> Logs { get; set; }
+
+        [DbFunction]
+        public static int GetDistance(double sourceLat, double sourceLng, double targetLat, double targetLng)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

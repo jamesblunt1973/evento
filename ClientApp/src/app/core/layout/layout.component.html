@@ -6,16 +6,16 @@
     <mat-drawer-container fxFlex="1" (backdropClick)="onSidebarClosing()">
       <mat-drawer mode="over" [opened]="sidebarStatus" position="start">
         <div class="filter-container">
-          <form #filterDataForm="ngForm" fxLayout="column">
+          <form #filterDataForm="ngForm" fxLayout="column" (ngSubmit)="applyFilter()">
             <mat-form-field>
               <input [matDatepicker]="datePickerFrom" matInput name="from" required [(ngModel)]="model.from"
-                (click)="datePickerFrom.open()" placeholder="Pick date from">
+                (click)="datePickerFrom.open()" placeholder="Pick date from" [matDatepickerFilter]="dateFromFilter">
               <mat-datepicker-toggle matSuffix [for]="datePickerFrom"></mat-datepicker-toggle>
               <mat-datepicker touchUi #datePickerFrom></mat-datepicker>
             </mat-form-field>
             <mat-form-field>
               <input [matDatepicker]="datePickerTo" matInput name="to" required [(ngModel)]="model.to"
-                (click)="datePickerTo.open()" placeholder="Pick date to">
+                (click)="datePickerTo.open()" placeholder="Pick date to" [matDatepickerFilter]="dateToFilter">
               <mat-datepicker-toggle matSuffix [for]="datePickerTo"></mat-datepicker-toggle>
               <mat-datepicker touchUi #datePickerTo></mat-datepicker>
             </mat-form-field>

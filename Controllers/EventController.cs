@@ -80,6 +80,7 @@ namespace ServerApi.Controllers
 
             var count = q.Count();
 
+            const int distance = 10000;
             switch (data.Sort)
             {
                 case GetEventsSort.Latest:
@@ -90,6 +91,8 @@ namespace ServerApi.Controllers
                     break;
                 case GetEventsSort.Nearest:
                     // TODO: create a database function which take a geo location as input and sort the events by distance
+                    if (data.Latitude.HasValue && data.Longitude.HasValue)
+                        q = q.Where(a => DataContext.GetDistance(data.Latitude.Value, data.Longitude.Value, a.Latitude, a.Longitude) <= distance);
                     break;
                 default:
                     break;
@@ -195,7 +198,7 @@ namespace ServerApi.Controllers
             var list = await context.Photos.Where(a => a.EventId == id).OrderBy(a => a.Id).ToListAsync();
             return Ok(list);
         }
-        
+
         // DELETE api/events/photos/5
         [HttpDelete("photos/{id}")]
         public async Task<IActionResult> DeletePhoto(int id)
@@ -214,7 +217,7 @@ namespace ServerApi.Controllers
             p.Visible = photo.Visible;
             await context.SaveChangesAsync();
         }
-        
+
         // POST api/events/new
         [HttpPost("new")]
         public async Task<IActionResult> NewEvent(EventDto data)

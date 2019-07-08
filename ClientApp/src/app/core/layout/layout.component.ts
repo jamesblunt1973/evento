@@ -18,6 +18,7 @@ import { ITag } from '../../shared/models/tag.model';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
 
+  private yesterday: Date;
   subscriptions: Array<Subscription> = [];
   sidebarStatus: boolean;
   rightbarStatus: boolean;
@@ -28,19 +29,23 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private mainService: MainService
-    ) { }
+  ) {
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    this.yesterday = yesterday;
+  }
 
   ngOnInit() {
     let sub = this.store.pipe(select(getSidebarStatus)).subscribe(status => {
       this.sidebarStatus = status == 'open';
     });
     this.subscriptions.push(sub);
-    
+
     sub = this.store.pipe(select(getRightbarStatus)).subscribe(status => {
       this.rightbarStatus = status == 'open';
     });
     this.subscriptions.push(sub);
-    
+
     this.user$ = this.store.pipe(select(getAuthUser));
 
     sub = this.mainService.getTags().subscribe(tags => {
@@ -71,5 +76,19 @@ export class LayoutComponent implements OnInit, OnDestroy {
   logout() {
     this.store.dispatch(new Logout());
     this.store.dispatch(new CloseRightbar());
+  }
+
+  dateFromFilter = (d: Date): boolean => {
+    return d >= this.yesterday;
+  }
+
+  dateToFilter = (d: Date): boolean => {
+    if (this.model.from)
+      return d >= this.model.from;
+    return d >= this.yesterday;
+  }
+
+  applyFilter() {
+    console.log(this.model);
   }
 }
