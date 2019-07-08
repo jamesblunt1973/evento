@@ -7,9 +7,9 @@ import { AppState } from '../../app.state';
 import { IUser } from '../../shared/models/user.model';
 import { getAuthUser } from '../../shared/state/auth.reducer';
 import { Logout } from '../../shared/state/auth.actions';
-import { FilterData } from '../filter.model';
 import { MainService } from '../../shared/main.service';
 import { ITag } from '../../shared/models/tag.model';
+import { GetEventsParameter } from '../../shared/models/getEventsParameter';
 
 @Component({
   selector: 'app-layout',
@@ -23,7 +23,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   sidebarStatus: boolean;
   rightbarStatus: boolean;
   user$: Observable<IUser>;
-  model = new FilterData();
+  model = new GetEventsParameter();
   tags: Array<ITag> = [];
 
   constructor(
@@ -89,6 +89,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   applyFilter() {
-    console.log(this.model);
+    this.mainService.getEvents(this.model);
   }
 }
