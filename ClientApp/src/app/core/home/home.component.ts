@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatButtonToggleChange } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { latLng } from 'leaflet';
@@ -9,6 +10,7 @@ import { ITag } from '../../shared/models/tag.model';
 import { AppState } from '../../app.state';
 import { GetEvents } from '../state/events.actions';
 import * as fromReducer from '../state/events.reducers';
+import { GetEventsSort } from '../../shared/models/getEventsSort';
 
 @Component({
   selector: 'app-home',
@@ -70,6 +72,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     //   this.loading = false;
     // });
     // this.subscriptions.push(sub);
+    this.filter.sort = GetEventsSort.latest;
+    this.loading = true;
+    this.store.dispatch(new GetEvents(this.filter));
+  }
+
+  changeView(e: MatButtonToggleChange) {
+    if (e.value == 'apps')
+      this.filter.sort = GetEventsSort.latest;
+    else
+      this.filter.sort = GetEventsSort.nearest;
+    this.events = [];
+    this.loading = true;
     this.store.dispatch(new GetEvents(this.filter));
   }
 }
