@@ -27,8 +27,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login() {
     this.store.dispatch(new Login(this.model));
-    //   password: 'Fdsa$321',
-    //   userName: 'malekan'
   }
 
   ngOnInit(): void {

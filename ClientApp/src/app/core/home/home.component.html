@@ -1,6 +1,16 @@
 <app-main-search></app-main-search>
 <div class="events-container">
-  <mat-card class="title">Total Results: {{totalCount}}</mat-card>
+  <div class="title" fxLayout="row" fxLayoutAlign="start center">
+    <span>Total Results: {{totalCount}}</span>
+    <mat-button-toggle-group aria-label="View Style" fxFlexOffset="auto">
+      <mat-button-toggle>
+        <mat-icon>apps</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle>
+        <mat-icon>place</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
   <div fxLayout="row wrap" fxLayoutAlign="center start">
     <mat-spinner *ngIf="loading" color="accent"></mat-spinner>
     <div *ngFor="let event of events">

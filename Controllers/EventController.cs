@@ -78,8 +78,6 @@ namespace ServerApi.Controllers
                 q = q.Where(a => a.UserId == data.UserId);
             }
 
-            var count = q.Count();
-
             const int distance = 10000;
             switch (data.Sort)
             {
@@ -97,6 +95,8 @@ namespace ServerApi.Controllers
                 default:
                     break;
             }
+
+            var count = q.Count();
 
             var events = await q.Skip(data.Count * data.Page).Take(data.Count)
                 .Select(a => new EventSummury()

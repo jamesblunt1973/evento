@@ -1,10 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { latLng } from 'leaflet';
 import { MainService } from '../../shared/main.service';
 import { IEventSummury } from '../../shared/models/eventSummury';
 import { GetEventsParameter } from '../../shared/models/getEventsParameter';
 import { ITag } from '../../shared/models/tag.model';
+import { AppState } from '../../app.state';
+import { GetEvents } from '../state/events.actions';
+import * as fromReducer from '../state/events.reducers';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +24,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   private subscriptions: Array<Subscription> = [];
   loading = true;
 
-  constructor(private mainService: MainService) { }
+  constructor(private mainService: MainService,
+    private store: Store<AppState>) { }
 
   filter = new GetEventsParameter();
 
@@ -39,10 +44,17 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.filter.longitude = pos.lng;
       this.getEvents();
     }, error => {
-        this.mainService.navigatorGeolocationError(error);
-        this.getEvents();
+      this.mainService.navigatorGeolocationError(error);
+      this.getEvents();
     });
-}
+
+    sub = this.store.pipe(select(fromReducer.getEventsStatus)).subscribe(res => {
+      this.totalCount = res.totalCount;
+      this.events = res.events;
+      this.loading = false;
+    });
+    this.subscriptions.push(sub);
+  }
 
   ngOnDestroy(): void {
     //this.drawerContent.style.background = '';
@@ -52,11 +64,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getEvents() {
-    let sub = this.mainService.getEvents(this.filter).subscribe(res => {
-      this.totalCount = res.totalCount;
-      this.events = res.events;
-      this.loading = false;
-    });
-    this.subscriptions.push(sub);
+    // let sub = this.mainService.getEvents(this.filter).subscribe(res => {
+    //   this.totalCount = res.totalCount;
+    //   this.events = res.events;
+    //   this.loading = false;
+    // });
+    // this.subscriptions.push(sub);
+    this.store.dispatch(new GetEvents(this.filter));
   }
 }

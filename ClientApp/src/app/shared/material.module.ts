@@ -5,6 +5,7 @@ import {
   MatToolbarModule,
   MatListModule,
   MatButtonModule,
+  MatButtonToggleModule,
   MatFormFieldModule,
   MatInputModule,
   MatCardModule,
@@ -20,6 +21,7 @@ import {
 @NgModule({
   exports: [
     MatButtonModule,
+    MatButtonToggleModule,
     MatIconModule,
     MatToolbarModule,
     MatListModule,
@@ -36,6 +38,7 @@ import {
     MatSelectModule],
   imports: [
     MatButtonModule,
+    MatButtonToggleModule,
     MatIconModule,
     MatToolbarModule,
     MatListModule,

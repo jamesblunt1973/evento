@@ -10,6 +10,7 @@ import { Logout } from '../../shared/state/auth.actions';
 import { MainService } from '../../shared/main.service';
 import { ITag } from '../../shared/models/tag.model';
 import { GetEventsParameter } from '../../shared/models/getEventsParameter';
+import { GetEvents } from '../state/events.actions';
 
 @Component({
   selector: 'app-layout',
@@ -89,6 +90,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   applyFilter() {
-    this.mainService.getEvents(this.model);
+    this.store.dispatch(new GetEvents(this.model));
   }
 }
