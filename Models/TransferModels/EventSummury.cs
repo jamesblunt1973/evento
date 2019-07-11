@@ -12,5 +12,7 @@ namespace ServerApi.Models.TransferModels
         public int Joined { get; set; }
         public int? Capacity { get; set; }
         public IEnumerable<int> Tags { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 }

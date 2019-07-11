@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { latLng } from 'leaflet';
+import { latLng, LatLng, Layer, tileLayer, marker, icon } from 'leaflet';
 import { MainService } from '../../shared/main.service';
 import { IEventSummury } from '../../shared/models/eventSummury';
 import { GetEventsParameter } from '../../shared/models/getEventsParameter';
@@ -26,6 +26,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   private subscriptions: Array<Subscription> = [];
   loading = true;
 
+  center: LatLng = latLng([0, 0]);
+  markers: Layer[] = [];
+  streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    detectRetina: true
+  });
+  options = {
+    layers: [this.streetMaps],
+    zoom: 15,
+    center: this.center
+  };
+
+
   constructor(private mainService: MainService,
     private store: Store<AppState>) { }
 
@@ -41,9 +53,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sub);
 
     navigator.geolocation.getCurrentPosition(res => {
-      let pos = latLng(res.coords.latitude, res.coords.longitude);
-      this.filter.latitude = pos.lat;
-      this.filter.longitude = pos.lng;
+      this.center = latLng(res.coords.latitude, res.coords.longitude);
+      this.filter.latitude = this.center.lat;
+      this.filter.longitude = this.center.lng;
       this.getEvents();
     }, error => {
       this.mainService.navigatorGeolocationError(error);
@@ -54,6 +66,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.totalCount = res.totalCount;
       this.events = res.events;
       this.loading = false;
+      
+      this.markers = [];
+      this.events.forEach(event => {
+        let pos = latLng(event.latitude, event.longitude);
+        this.markers.push(this.createMarker(pos));
+      });
+
     });
     this.subscriptions.push(sub);
   }
@@ -86,4 +105,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.store.dispatch(new GetEvents(this.filter));
   }
+
+  createMarker(position: LatLng) {
+    const newMarker = marker(
+      position,
+      {
+        icon: icon({
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
+          iconUrl: 'leaflet/marker-icon.png',
+          shadowUrl: 'leaflet/marker-shadow.png'
+        })
+      }
+    );
+    return newMarker;
+  }
+
 }

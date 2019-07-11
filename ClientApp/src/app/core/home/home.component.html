@@ -2,8 +2,8 @@
 <div class="events-container">
   <div class="title" fxLayout="row" fxLayoutAlign="start center">
     <span>Total Results: {{totalCount}}</span>
-    <mat-button-toggle-group aria-label="View Style" fxFlexOffset="auto" #vire (change)="changeView($event)">
-      <mat-button-toggle value="apps" checked>
+    <mat-button-toggle-group aria-label="View Style" fxFlexOffset="auto" (change)="changeView($event)">
+      <mat-button-toggle value="apps" #viewtype checked>
         <mat-icon>apps</mat-icon>
       </mat-button-toggle>
       <mat-button-toggle value="place">
@@ -11,10 +11,14 @@
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
-  <div fxLayout="row wrap" fxLayoutAlign="center start">
+  <div *ngIf="viewtype.checked" fxLayout="row wrap" fxLayoutAlign="center start">
     <mat-spinner *ngIf="loading" color="accent"></mat-spinner>
     <div *ngFor="let event of events">
       <app-event [event]="event" [tag]="tags[event.tags[0]]"></app-event>
     </div>
   </div>
+  <div *ngIf="!viewtype.checked">
+    <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" [(leafletCenter)]="center"></div>
+  </div>
+
 </div>

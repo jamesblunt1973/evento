@@ -107,7 +107,9 @@ namespace ServerApi.Controllers
                     Joined = a.Joined,
                     Tags = a.EventTags.Select(b => b.TagId),
                     Photo = a.Photos.DefaultIfEmpty().First().FileName,
-                    Title = a.Title
+                    Title = a.Title,
+                    Latitude = a.Latitude,
+                    Longitude = a.Longitude
                 }).ToListAsync();
             result.Events = events;
 

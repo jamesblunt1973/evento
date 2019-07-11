@@ -6,4 +6,6 @@ export interface IEventSummury {
     holdingDate: Date;
     joined: number;
     capacity: number | null;
+    latitude: number;
+    longitude: number;
 }

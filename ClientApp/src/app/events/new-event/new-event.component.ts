@@ -48,9 +48,10 @@ export class NewEventComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     navigator.geolocation.getCurrentPosition(res => {
-      this.center = latLng(res.coords.latitude, res.coords.longitude);
-      this.setModelPosition(this.center);
-      this.addMarker(latLng(res.coords.latitude, res.coords.longitude));
+      let userPosition = latLng(res.coords.latitude, res.coords.longitude);
+      this.center = userPosition;
+      this.addMarker(userPosition);
+      this.setModelPosition(userPosition);
     }, this.mainService.navigatorGeolocationError);
 
     this.tags$ = this.mainService.getTags();
