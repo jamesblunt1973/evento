@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatButtonToggleChange } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -33,13 +34,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   });
   options = {
     layers: [this.streetMaps],
-    zoom: 15,
+    zoom: 12,
     center: this.center
   };
 
 
   constructor(private mainService: MainService,
-    private store: Store<AppState>) { }
+    private store: Store<AppState>,
+    private router: Router) { }
 
   filter = new GetEventsParameter();
 
@@ -53,9 +55,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sub);
 
     navigator.geolocation.getCurrentPosition(res => {
-      this.center = latLng(res.coords.latitude, res.coords.longitude);
-      this.filter.latitude = this.center.lat;
-      this.filter.longitude = this.center.lng;
+      let userPosition = latLng(res.coords.latitude, res.coords.longitude);
+      this.center = userPosition;
+      this.options.center = userPosition;
+      this.filter.latitude = userPosition.lat;
+      this.filter.longitude = userPosition.lng;
       this.getEvents();
     }, error => {
       this.mainService.navigatorGeolocationError(error);
@@ -70,7 +74,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.markers = [];
       this.events.forEach(event => {
         let pos = latLng(event.latitude, event.longitude);
-        this.markers.push(this.createMarker(pos));
+        this.markers.push(this.createMarker(pos, event.id));
       });
 
     });
@@ -106,7 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.store.dispatch(new GetEvents(this.filter));
   }
 
-  createMarker(position: LatLng) {
+  createMarker(position: LatLng, id: number) {
     const newMarker = marker(
       position,
       {
@@ -115,9 +119,13 @@ export class HomeComponent implements OnInit, OnDestroy {
           iconAnchor: [13, 41],
           iconUrl: 'leaflet/marker-icon.png',
           shadowUrl: 'leaflet/marker-shadow.png'
-        })
+        }), clickable: true
       }
-    );
+    ).on('click', a => {
+      this.ngZone.run(() => {
+        this.router.navigate(['/events/' + id]);
+      });
+    });
     return newMarker;
   }
 

@@ -33,7 +33,7 @@ export class EventComponent implements OnInit, OnDestroy {
   });
   options = {
     layers: [this.streetMaps],
-    zoom: 15,
+    zoom: 17,
     center: this.eventLocation
   };
 
@@ -71,6 +71,7 @@ export class EventComponent implements OnInit, OnDestroy {
 
         // setup event location
         this.eventLocation = latLng([this.event.latitude, this.event.longitude]);
+        this.options.center = this.eventLocation;
         const newMarker = marker(
           this.eventLocation,
           {
