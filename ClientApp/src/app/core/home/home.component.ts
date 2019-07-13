@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatButtonToggleChange } from '@angular/material';
 import { Store, select } from '@ngrx/store';
@@ -41,7 +41,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private mainService: MainService,
     private store: Store<AppState>,
-    private router: Router) { }
+    private router: Router,
+    private zone: NgZone) { }
 
   filter = new GetEventsParameter();
 
@@ -122,7 +123,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }), clickable: true
       }
     ).on('click', a => {
-      this.ngZone.run(() => {
+      this.zone.run(() => {
         this.router.navigate(['/events/' + id]);
       });
     });

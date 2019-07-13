@@ -91,5 +91,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   applyFilter() {
     this.store.dispatch(new GetEvents(this.model));
+    this.store.dispatch(new CloseSidebar());
   }
 }
