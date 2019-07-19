@@ -12,8 +12,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { uiReducer } from './state/ui.reducer';
 import { MainSearchComponent } from './main-search/main-search.component';
 import { EventComponent } from './event/event.component';
-import { eventsReducer } from './state/events.reducers';
-import { EventsEffects } from './state/events.effects';
+//import { eventsReducer } from './state/events.reducers';
+//import { EventsEffects } from './state/events.effects';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -30,8 +30,8 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     AppRoutingModule,
     StoreModule.forFeature('uiState', uiReducer),
-    StoreModule.forFeature('eventsState', eventsReducer),
-    EffectsModule.forFeature([EventsEffects]),
+    //StoreModule.forFeature('eventsState', eventsReducer),
+    //EffectsModule.forFeature([EventsEffects]),
     LeafletModule.forRoot(),
   ],
   exports: [

@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatButtonToggleChange } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { latLng, LatLng, Layer, tileLayer, marker, icon } from 'leaflet';
 import { MainService } from '../../shared/main.service';
 import { IEventSummury } from '../../shared/models/eventSummury';
-import { GetEventsParameter } from '../../shared/models/getEventsParameter';
+import { GetEventsParameter, IGetEventsParameter } from '../../shared/models/getEventsParameter';
 import { ITag } from '../../shared/models/tag.model';
 import { AppState } from '../../app.state';
-import { GetEvents } from '../state/events.actions';
-import * as fromReducer from '../state/events.reducers';
+//import { GetEvents } from '../state/events.actions';
+//import * as fromReducer from '../state/events.reducers';
 import { GetEventsSort } from '../../shared/models/getEventsSort';
 
 @Component({
@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(private mainService: MainService,
     private store: Store<AppState>,
     private router: Router,
+    private route: ActivatedRoute,
     private zone: NgZone) { }
 
   filter = new GetEventsParameter();
@@ -67,19 +68,56 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.getEvents();
     });
 
-    sub = this.store.pipe(select(fromReducer.getEventsStatus)).subscribe(res => {
-      this.totalCount = res.totalCount;
-      this.events = res.events;
-      this.loading = false;
+    //sub = this.store.pipe(select(fromReducer.getEventsStatus)).subscribe(res => {
+    //  this.totalCount = res.totalCount;
+    //  this.events = res.events;
+    //  this.loading = false;
       
-      this.markers = [];
-      this.events.forEach(event => {
-        let pos = latLng(event.latitude, event.longitude);
-        this.markers.push(this.createMarker(pos, event.id));
-      });
+    //  this.markers = [];
+    //  this.events.forEach(event => {
+    //    let pos = latLng(event.latitude, event.longitude);
+    //    this.markers.push(this.createMarker(pos, event.id));
+    //  });
 
+    //});
+    //this.subscriptions.push(sub);
+
+    this.route.queryParamMap.subscribe((p: ParamMap) => {
+      var count = +p.get('count');
+      var from = p.get('from');
+      var latitude = +p.get('latitude');
+      var longitude = +p.get('longitude');
+      var page = +p.get('page');
+      var sort = +p.get('sort');
+      var str = p.get('str');
+      var tags = p.getAll('tags');
+      var to = p.get('to');
+      var userId = p.get('userId');
+      let data: IGetEventsParameter = {
+        count: count || 20,
+        from: from == null ? null : new Date(from),
+        latitude: latitude,
+        longitude: longitude,
+        page: page,
+        sort: sort,
+        str: str || '',
+        tags: tags.map(Number),
+        to: to == null ? null : new Date(to),
+        userId: userId || ''
+      };
+      sub = this.mainService.getEvents(data).subscribe(res => {
+        this.totalCount = res.totalCount;
+        this.events = res.events;
+        this.loading = false;
+
+        this.markers = [];
+        this.events.forEach(event => {
+          let pos = latLng(event.latitude, event.longitude);
+          this.markers.push(this.createMarker(pos, event.id));
+        });
+      });
+      this.subscriptions.push(sub);
     });
-    this.subscriptions.push(sub);
   }
 
   ngOnDestroy(): void {
@@ -98,7 +136,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // this.subscriptions.push(sub);
     this.filter.sort = GetEventsSort.latest;
     this.loading = true;
-    this.store.dispatch(new GetEvents(this.filter));
+    //this.store.dispatch(new GetEvents(this.filter));
   }
 
   changeView(e: MatButtonToggleChange) {
@@ -108,7 +146,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.filter.sort = GetEventsSort.nearest;
     this.events = [];
     this.loading = true;
-    this.store.dispatch(new GetEvents(this.filter));
+    //this.store.dispatch(new GetEvents(this.filter));
   }
 
   createMarker(position: LatLng, id: number) {

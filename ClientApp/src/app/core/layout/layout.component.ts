@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { CloseSidebar, CloseRightbar } from '../state/ui.actions';
@@ -10,7 +11,7 @@ import { Logout } from '../../shared/state/auth.actions';
 import { MainService } from '../../shared/main.service';
 import { ITag } from '../../shared/models/tag.model';
 import { GetEventsParameter } from '../../shared/models/getEventsParameter';
-import { GetEvents } from '../state/events.actions';
+//import { GetEvents } from '../state/events.actions';
 
 @Component({
   selector: 'app-layout',
@@ -28,6 +29,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   tags: Array<ITag> = [];
 
   constructor(
+    private router: Router,
     private store: Store<AppState>,
     private mainService: MainService
   ) {
@@ -90,7 +92,18 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   applyFilter() {
-    this.store.dispatch(new GetEvents(this.model));
+    //this.store.dispatch(new GetEvents(this.model));
     this.store.dispatch(new CloseSidebar());
+
+    /*
+    this.model.str = this.model.str || null;
+    this.model.userId = this.model.userId || null;
+    this.model.latitude = this.model.latitude || null;
+    this.model.longitude = this.model.longitude || null;
+    this.model.sort = this.model.sort || null;
+    this.model.page = this.model.page || null;
+    this.model.count = this.model.count || null;
+    */
+    this.router.navigate(['/'], { queryParams: this.model });
   }
 }
