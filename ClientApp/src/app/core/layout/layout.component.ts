@@ -10,7 +10,7 @@ import { getAuthUser } from '../../shared/state/auth.reducer';
 import { Logout } from '../../shared/state/auth.actions';
 import { MainService } from '../../shared/main.service';
 import { ITag } from '../../shared/models/tag.model';
-import { GetEventsParameter } from '../../shared/models/getEventsParameter';
+import { GetEventsParameter, IGetEventsParameter } from '../../shared/models/getEventsParameter';
 //import { GetEvents } from '../state/events.actions';
 
 @Component({
@@ -95,15 +95,28 @@ export class LayoutComponent implements OnInit, OnDestroy {
     //this.store.dispatch(new GetEvents(this.model));
     this.store.dispatch(new CloseSidebar());
 
-    /*
-    this.model.str = this.model.str || null;
-    this.model.userId = this.model.userId || null;
-    this.model.latitude = this.model.latitude || null;
-    this.model.longitude = this.model.longitude || null;
-    this.model.sort = this.model.sort || null;
-    this.model.page = this.model.page || null;
-    this.model.count = this.model.count || null;
-    */
-    this.router.navigate(['/'], { queryParams: this.model });
+
+    var qs: IGetEventsParameter = {};
+    if (this.model.count != 20)
+      qs.count = this.model.count;
+    if (this.model.from != null)
+      qs.from = this.model.from;
+    if (this.model.latitude != 0)
+      qs.latitude = this.model.latitude;
+    if (this.model.longitude != 0)
+      qs.longitude = this.model.longitude;
+    if (this.model.page != 0)
+      qs.page = this.model.page;
+    if (this.model.sort != 0)
+      qs.sort = this.model.sort;
+    if (this.model.str != '')
+      qs.str = this.model.str;
+    if (this.model.tags.length > 0)
+      qs.tags = this.model.tags;
+    if (this.model.to != null)
+      qs.to = this.model.to;
+    if (this.model.userId != '')
+      qs.userId = this.model.userId;
+    this.router.navigate(['/'], { queryParams: qs });
   }
 }

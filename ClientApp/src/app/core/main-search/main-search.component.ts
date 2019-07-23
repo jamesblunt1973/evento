@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { IGetEventsParameter } from '../../shared/models/getEventsParameter';
 
 @Component({
   selector: 'app-main-search',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainSearchComponent implements OnInit {
 
-  constructor() { }
+  @Input() str: string;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  search() {
+    var qs: IGetEventsParameter = {};
+    if (this.str != '')
+      qs.str = this.str;
+    this.router.navigate(['/'], { queryParams: qs });
   }
 
 }

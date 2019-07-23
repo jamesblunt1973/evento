@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatButtonToggleChange } from '@angular/material';
-import { Store, select } from '@ngrx/store';
+//import { Store, select } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { latLng, LatLng, Layer, tileLayer, marker, icon } from 'leaflet';
 import { MainService } from '../../shared/main.service';
@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   totalCount: number;
   private subscriptions: Array<Subscription> = [];
   loading = true;
+  model : IGetEventsParameter;
 
   center: LatLng = latLng([0, 0]);
   markers: Layer[] = [];
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   constructor(private mainService: MainService,
-    private store: Store<AppState>,
+    //private store: Store<AppState>,
     private router: Router,
     private route: ActivatedRoute,
     private zone: NgZone) { }
@@ -93,19 +94,19 @@ export class HomeComponent implements OnInit, OnDestroy {
       var tags = p.getAll('tags');
       var to = p.get('to');
       var userId = p.get('userId');
-      let data: IGetEventsParameter = {
-        count: count || 20,
-        from: from == null ? null : new Date(from),
-        latitude: latitude,
-        longitude: longitude,
-        page: page,
-        sort: sort,
-        str: str || '',
-        tags: tags.map(Number),
-        to: to == null ? null : new Date(to),
-        userId: userId || ''
-      };
-      sub = this.mainService.getEvents(data).subscribe(res => {
+      this.model = new GetEventsParameter(
+        latitude,
+        longitude,
+        from == null ? null : new Date(from),
+        to == null ? null : new Date(to),
+        str,
+        userId,
+        tags.map(Number),
+        page,
+        count || 20,
+        sort);
+      
+      sub = this.mainService.getEvents(this.model).subscribe(res => {
         this.totalCount = res.totalCount;
         this.events = res.events;
         this.loading = false;

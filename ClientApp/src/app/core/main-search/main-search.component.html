@@ -1,4 +1,4 @@
 <div class="search">
-  <input matInput type="search" placeholder="Search" />
+  <input matInput type="search" placeholder="Search" [(ngModel)]="str" (change)="search()" />
   <mat-icon>search</mat-icon>
 </div>
