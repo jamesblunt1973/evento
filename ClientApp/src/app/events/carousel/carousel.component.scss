@@ -1,27 +1,33 @@
 .carousel-container {
-  width: 100%;
+  /*width: 100%;
   margin: 0;
   padding: 0;
 
   .ng2-carouselamos-container {
     width: 70%;
     margin: auto;
-  }
-
+  }*/
   .slide-items {
-    margin-right: 10px;
+    /*margin-right: 10px;*/
+    opacity: 0.6;
+    transition: all ease 0.3s;
 
     img {
       width: 96px;
     }
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
+
 button[mat-icon-button] {
   background-color: #f44336;
   opacity: 0.6;
   transition: all 0.3s ease;
 
-  &:hover{
+  &:hover {
     opacity: 1;
   }
 }

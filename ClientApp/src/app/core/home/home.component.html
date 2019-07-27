@@ -1,8 +1,8 @@
-<app-main-search [str]="model.str"></app-main-search>
+<app-main-search [str]="filter.str"></app-main-search>
 <div class="events-container">
   <div class="title" fxLayout="row" fxLayoutAlign="start center">
     <span>Total Results: {{totalCount}}</span>
-    <mat-button-toggle-group aria-label="View Style" fxFlexOffset="auto" (change)="changeView($event)">
+    <mat-button-toggle-group aria-label="View Style" fxFlexOffset="auto">
       <mat-button-toggle value="apps" #viewtype checked>
         <mat-icon>apps</mat-icon>
       </mat-button-toggle>
@@ -18,7 +18,13 @@
     </div>
   </div>
   <div *ngIf="!viewtype.checked">
-    <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" [(leafletCenter)]="center"></div>
+    <div class="map" leaflet
+         [leafletOptions]="options"
+         [leafletLayers]="markers"
+         [(leafletCenter)]="center"
+         (leafletMapZoomEnd)="changeMap()"
+         (leafletMapMoveEnd)="changeMap()"></div>
+    <p>* Shows only events within 10KM radius from the center of the map.</p>
   </div>
 
 </div>

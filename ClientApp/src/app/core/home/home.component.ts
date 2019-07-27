@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy, NgZone } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { MatButtonToggleChange } from '@angular/material';
 //import { Store, select } from '@ngrx/store';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { latLng, LatLng, Layer, tileLayer, marker, icon } from 'leaflet';
 import { MainService } from '../../shared/main.service';
 import { IEventSummury } from '../../shared/models/eventSummury';
-import { GetEventsParameter, IGetEventsParameter } from '../../shared/models/getEventsParameter';
+import { IGetEventsParameter } from '../../shared/models/getEventsParameter';
 import { ITag } from '../../shared/models/tag.model';
-import { AppState } from '../../app.state';
 //import { GetEvents } from '../state/events.actions';
 //import * as fromReducer from '../state/events.reducers';
 import { GetEventsSort } from '../../shared/models/getEventsSort';
@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   tags: ITag[];
   totalCount: number;
   private subscriptions: Array<Subscription> = [];
-  loading = true;
-  model : IGetEventsParameter;
+  mapChanges = new Subject<LatLng>();
 
+  filter: IGetEventsParameter = {};
   center: LatLng = latLng([0, 0]);
   markers: Layer[] = [];
   streetMaps = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -46,8 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private zone: NgZone) { }
 
-  filter = new GetEventsParameter();
-
   ngOnInit() {
     this.drawerContent = document.getElementsByTagName('mat-drawer-container').item(0);
     this.drawerContent.style.backgroundImage = 'url(\'/assets/images/main-bg.jpg\')';
@@ -57,67 +55,62 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.push(sub);
 
-    navigator.geolocation.getCurrentPosition(res => {
-      let userPosition = latLng(res.coords.latitude, res.coords.longitude);
-      this.center = userPosition;
-      this.options.center = userPosition;
-      this.filter.latitude = userPosition.lat;
-      this.filter.longitude = userPosition.lng;
-      this.getEvents();
-    }, error => {
-      this.mainService.navigatorGeolocationError(error);
-      this.getEvents();
-    });
 
-    //sub = this.store.pipe(select(fromReducer.getEventsStatus)).subscribe(res => {
-    //  this.totalCount = res.totalCount;
-    //  this.events = res.events;
-    //  this.loading = false;
-      
-    //  this.markers = [];
-    //  this.events.forEach(event => {
-    //    let pos = latLng(event.latitude, event.longitude);
-    //    this.markers.push(this.createMarker(pos, event.id));
-    //  });
-
-    //});
-    //this.subscriptions.push(sub);
+    /*
+     * 1- get query parameters from address and assign it to filter
+     * 2- check for locaition in filter
+     * 3- if there is no location in filter, get current user location and assign it to filter location
+     * 4- assign center of map to filter location
+     * 5- get dta from server
+    */
 
     this.route.queryParamMap.subscribe((p: ParamMap) => {
-      var count = +p.get('count');
-      var from = p.get('from');
-      var latitude = +p.get('latitude');
-      var longitude = +p.get('longitude');
-      var page = +p.get('page');
-      var sort = +p.get('sort');
-      var str = p.get('str');
-      var tags = p.getAll('tags');
-      var to = p.get('to');
-      var userId = p.get('userId');
-      this.model = new GetEventsParameter(
-        latitude,
-        longitude,
-        from == null ? null : new Date(from),
-        to == null ? null : new Date(to),
-        str,
-        userId,
-        tags.map(Number),
-        page,
-        count || 20,
-        sort);
-      
-      sub = this.mainService.getEvents(this.model).subscribe(res => {
-        this.totalCount = res.totalCount;
-        this.events = res.events;
-        this.loading = false;
-
-        this.markers = [];
-        this.events.forEach(event => {
-          let pos = latLng(event.latitude, event.longitude);
-          this.markers.push(this.createMarker(pos, event.id));
+      let count = +p.get('count');
+      let from = p.get('from');
+      let latitude = +p.get('latitude');
+      let longitude = +p.get('longitude');
+      let page = +p.get('page');
+      let sort = +p.get('sort');
+      let str = p.get('str');
+      let tags = p.getAll('tags');
+      let to = p.get('to');
+      let userId = p.get('userId');
+      this.filter = {
+        latitude: latitude,
+        longitude: longitude,
+        from: from == null ? null : new Date(from),
+        to: to == null ? null : new Date(to),
+        str: str,
+        userId: userId,
+        tags: tags.map(Number),
+        page: page,
+        count: count || 20,
+        sort: sort
+      };
+      if (this.filter.latitude && this.filter.longitude) {
+        this.getEvents();
+      }
+      else {
+        navigator.geolocation.getCurrentPosition(res => {
+          this.filter.latitude = res.coords.latitude;
+          this.filter.longitude = res.coords.longitude;
+          this.getEvents();
+        }, error => {
+          this.mainService.navigatorGeolocationError(error);
+          this.filter.latitude = 36.294655999999996; // default
+          this.filter.longitude = 59.57632;
+          this.getEvents();
         });
-      });
-      this.subscriptions.push(sub);
+      }
+    });
+
+
+    sub = this.mapChanges.pipe(
+      debounceTime(1000),
+    ).subscribe(center => {
+      this.filter.latitude = center.lat;
+      this.filter.longitude = center.lng
+      this.router.navigate(['/'], { queryParams: this.filter });
     });
   }
 
@@ -129,25 +122,20 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getEvents() {
-    // let sub = this.mainService.getEvents(this.filter).subscribe(res => {
-    //   this.totalCount = res.totalCount;
-    //   this.events = res.events;
-    //   this.loading = false;
-    // });
-    // this.subscriptions.push(sub);
-    this.filter.sort = GetEventsSort.latest;
-    this.loading = true;
-    //this.store.dispatch(new GetEvents(this.filter));
-  }
+    this.center = latLng(this.filter.latitude, this.filter.longitude);
+    this.options.center = this.center;
 
-  changeView(e: MatButtonToggleChange) {
-    if (e.value == 'apps')
-      this.filter.sort = GetEventsSort.latest;
-    else
-      this.filter.sort = GetEventsSort.nearest;
-    this.events = [];
-    this.loading = true;
-    //this.store.dispatch(new GetEvents(this.filter));
+    let sub = this.mainService.getEvents(this.filter).subscribe(res => {
+      this.totalCount = res.totalCount;
+      this.events = res.events;
+
+      this.markers = [];
+      this.events.forEach(event => {
+        let pos = latLng(event.latitude, event.longitude);
+        this.markers.push(this.createMarker(pos, event.id));
+      });
+    });
+    this.subscriptions.push(sub);
   }
 
   createMarker(position: LatLng, id: number) {
@@ -169,4 +157,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return newMarker;
   }
 
+  changeMap() {
+    this.mapChanges.next(this.center);
+  }
 }

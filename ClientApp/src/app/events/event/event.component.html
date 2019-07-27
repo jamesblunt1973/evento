@@ -1,5 +1,7 @@
 <div class="narrow-form">
-  <mat-spinner *ngIf="loading" color="accent"></mat-spinner>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <mat-spinner *ngIf="loading" color="accent"></mat-spinner>
+  </div>
   <mat-card *ngIf="!loading">
     <mat-card-header>
       <img mat-card-avatar [src]="headerImg" />

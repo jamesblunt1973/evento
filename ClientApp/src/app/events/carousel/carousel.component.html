@@ -1,6 +1,9 @@
-<div class="carousel-container">
+<div class="carousel-container" fxLayout="row wrap" fxLayoutAlign="space-between">
+  <div *ngFor="let item of images" class="slide-items" (click)="selectPhoto(item)">
+    <img [src]="'/assets/files/events/' + eventId + '/_' + item.fileName" />
+  </div>
 
-  <div ng2-carouselamos class="slides-wrapper" [items]="images" [$prev]="prev" [$next]="next" [$item]="item">
+  <!--<div ng2-carouselamos class="slides-wrapper" [items]="images" [$prev]="prev" [$next]="next" [$item]="item">
   </div>
 
   <ng-template #prev>
@@ -17,5 +20,6 @@
     <div class="slide-items" (click)="selectPhoto(item)">
       <img [src]="'/assets/files/events/' + eventId + '/_' + item.fileName" />
     </div>
-  </ng-template>
+  </ng-template>-->
+
 </div>

@@ -47,20 +47,18 @@ namespace ServerApi.Controllers
             var q = context.Events.Where(a => a.Visible && (!globalVerification || a.Verified) && (!globalPayment || a.Payed));
             // TODO: Move query to repository 
 
-            if (data.From.HasValue || data.To.HasValue)
+            if (data.From.HasValue)
             {
-                if (data.From.HasValue)
-                {
-                    q = q.Where(a => a.HoldingDate >= data.From.Value);
-                }
-                // If date to is specified, query should returns the events before that
-                // and if not, we just select the events for the specified date (from)
-                var to = data.To.HasValue ? data.To : data.From.Value.AddDays(1);
+                q = q.Where(a => a.HoldingDate >= data.From.Value.ToLocalTime());
+            }
+            else if (data.To.HasValue)
+            {
+                var to = data.To.Value.ToLocalTime().AddDays(1);
                 q = q.Where(a => a.HoldingDate <= to);
             }
             else
             {
-                // Do not return archived events at first
+                // Do not return past events at first
                 q = q.Where(a => a.HoldingDate >= DateTime.Now);
             }
 
@@ -79,6 +77,9 @@ namespace ServerApi.Controllers
             }
 
             const int distance = 10000;
+            if (data.Latitude.HasValue && data.Longitude.HasValue)
+                q = q.Where(a => DataContext.GetDistance(data.Latitude.Value, data.Longitude.Value, a.Latitude, a.Longitude) <= distance);
+
             switch (data.Sort)
             {
                 case GetEventsSort.Latest:
@@ -89,8 +90,6 @@ namespace ServerApi.Controllers
                     break;
                 case GetEventsSort.Nearest:
                     // TODO: create a database function which take a geo location as input and sort the events by distance
-                    if (data.Latitude.HasValue && data.Longitude.HasValue)
-                        q = q.Where(a => DataContext.GetDistance(data.Latitude.Value, data.Longitude.Value, a.Latitude, a.Longitude) <= distance);
                     break;
                 default:
                     break;

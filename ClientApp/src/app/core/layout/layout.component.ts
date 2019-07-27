@@ -96,11 +96,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.store.dispatch(new CloseSidebar());
 
 
-    var qs: IGetEventsParameter = {};
+    var qs: any = {};
     if (this.model.count != 20)
       qs.count = this.model.count;
     if (this.model.from != null)
-      qs.from = this.model.from;
+      qs.from = this.model.from.toLocaleDateString();
     if (this.model.latitude != 0)
       qs.latitude = this.model.latitude;
     if (this.model.longitude != 0)
@@ -114,7 +114,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (this.model.tags.length > 0)
       qs.tags = this.model.tags;
     if (this.model.to != null)
-      qs.to = this.model.to;
+      qs.to = this.model.to.toLocaleDateString();
     if (this.model.userId != '')
       qs.userId = this.model.userId;
     this.router.navigate(['/'], { queryParams: qs });

@@ -14,15 +14,7 @@
     <button mat-icon-button (click)="userBtnClick()">
         <mat-icon>more_vert</mat-icon>
     </button>
-    <img class="user-icon" src="/assets/images/login-icon.svg" />    
-    <div *ngIf="user$ | async as user">{{user.name}}</div>
+    <img class="user-icon" [src]="headerImg" />    
+    <div *ngIf="user">{{user.name}}</div>
   </div>
 </mat-toolbar>
-<!--
-<div *ngIf="user$ | async as user else authLinks">
-  {{user.name}}
-</div>
-<ng-template #authLinks>
-  <a routerLink="auth/login">Login</a>
-  <a routerLink="auth/register">Register</a>
-</ng-template> -->

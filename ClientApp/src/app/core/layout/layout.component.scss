@@ -1,5 +1,12 @@
 .container {
   min-height: 100vh;
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    width: 100%;
+  }
 }
 mat-drawer-container {
   background-repeat: no-repeat;
